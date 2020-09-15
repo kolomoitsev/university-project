@@ -1,0 +1,70 @@
+.AuthComponent {
+    display: block;
+    position: relative;
+    height: 100vmin;
+    width: 100%;
+}
+
+.AuthComponentWrapper {
+    display: flex;
+    position: relative;
+    height: 100%;
+    width: 50%;
+    margin: auto;
+    align-items: center;
+    justify-content: center;
+}
+
+.AuthComponentWrapper form {
+    display: flex;
+    position: relative;
+    flex-direction: column;
+}
+
+.AuthComponentWrapper form > input, .AuthComponentWrapper form > button {
+    margin: 5px 0 0 0;
+    outline: none !important;
+}
+
+.RegisterComponent {
+    display: block;
+    position: relative;
+    height: 100vmin;
+    width: 100%;
+}
+
+.RegisterComponentWrapper {
+    display: flex;
+    position: relative;
+    height: 100%;
+    width: 50%;
+    margin: auto;
+    align-items: center;
+    justify-content: center;
+}
+
+.RegisterComponentWrapper form {
+    display: flex;
+    position: relative;
+    flex-direction: column;
+}
+
+.RegisterStep {
+    display: flex;
+    position: relative;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.RegisterStep input, .RegisterStep button {
+    margin: 5px 0 0 0;
+    outline: none !important;
+}
+
+.buttonsWrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+}
