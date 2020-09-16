@@ -19,7 +19,7 @@ const Auth = () => {
 
     useEffect(() => {
 
-        const validateForm = async () => {
+        const validateForm = () => {
 
             /* checking for valid email  */
 

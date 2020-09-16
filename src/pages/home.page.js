@@ -6,7 +6,7 @@ import '../App.css';
 
 const HomePage = () => {
 
-    const TOKEN = sessionStorage.getItem('token')
+    const TOKEN = localStorage.getItem('token')
 
     if(!TOKEN){
         return(

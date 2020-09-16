@@ -79,7 +79,7 @@ const Register = () => {
     useEffect(() => {
 
 
-        const validateRegister = async () => {
+        const validateRegister = () => {
 
             /* check for name // name > 4 symbols  */
 
