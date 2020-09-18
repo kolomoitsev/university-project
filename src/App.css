@@ -1,24 +1,42 @@
 .AuthComponent {
-    display: block;
+    display: flex;
     position: relative;
     height: 100vmin;
     width: 100%;
+    background-color: #f2f2f2;
+    align-items: center;
+    justify-content: center;
 }
 
 .AuthComponentWrapper {
     display: flex;
     position: relative;
-    height: 100%;
-    width: 50%;
+    height: 95%;
+    width: 30%;
     margin: auto;
     align-items: center;
     justify-content: center;
+    border-radius: 10px;
+
+    padding: 77px 55px 33px 55px;
+
+    background-color: #fff;
+
+    box-shadow: 0 5px 10px 0px rgba(0, 0, 0, 0.1);
+    -moz-box-shadow: 0 5px 10px 0px rgba(0, 0, 0, 0.1);
+    -webkit-box-shadow: 0 5px 10px 0px rgba(0, 0, 0, 0.1);
+    -o-box-shadow: 0 5px 10px 0px rgba(0, 0, 0, 0.1);
+    -ms-box-shadow: 0 5px 10px 0px rgba(0, 0, 0, 0.1);
+
+
 }
 
 .AuthComponentWrapper form {
     display: flex;
     position: relative;
     flex-direction: column;
+    width: 100%;
+    height: 100%;
 }
 
 .AuthComponentWrapper form > input, .AuthComponentWrapper form > button {
@@ -67,4 +85,141 @@
     flex-direction: row;
     justify-content: space-between;
     width: 100%;
+}
+
+
+
+.AuthComponentWrapper input{
+    display: block;
+    position: relative;
+    border: 0;
+    width: 100%;
+}
+
+.AuthComponentWrapper span{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 35px;
+    font-weight: 800;
+
+}
+
+.inputGroup{
+    display: block;
+    position: relative;
+    margin: 120px 0 0 0 ;
+}
+
+
+
+.Area {
+    display: block;
+    position: relative;
+    margin-bottom: 50px;
+}
+
+.Area span{
+    display: block;
+    position: absolute;
+    font-size: 16px;
+    font-weight: 400;
+    z-index: 9;
+    bottom: 10px;
+    left: 5px;
+}
+
+.Area input{
+    margin: 0 0 50px 0;
+    outline: none !important;
+
+}
+
+input.Area:focus span{
+    bottom: 50px;
+}
+
+
+.user-input-wrp {
+    position: relative;
+    width: 100%;
+}
+.user-input-wrp .inputText{
+    width: 100%;
+    outline: none;
+    border:none;
+    border-bottom: 1px solid #777;
+    box-shadow: none !important;
+}
+.user-input-wrp .inputText:focus{
+    border-color: blue;
+    border-width: medium medium 2px;
+}
+.user-input-wrp .floating-label {
+    position: absolute;
+    pointer-events: none;
+    top: 18px;
+    left: 10px;
+    transition: 0.2s ease all;
+    font-size: 13px;
+}
+.user-input-wrp input:focus ~ .floating-label,
+.user-input-wrp input:not(:focus):valid ~ .floating-label{
+    top: 0px;
+    left: 10px;
+    font-size: 13px;
+    opacity: 1;
+}
+
+.AuthComponentWrapper button{
+    width: 100%;
+    display: block;
+    position: relative;
+    z-index: 1;
+    border: 0;
+    border-radius: 8px;
+    overflow: hidden;
+    margin: 0 auto;
+
+    font-size: 15px;
+    color: #fff;
+    line-height: 1.2;
+    text-transform: uppercase;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 20px;
+    height: 50px;
+
+  background-color: #6979F8;
+
+}
+
+.AuthComponentWrapper button:hover{
+    cursor: pointer;
+}
+
+
+.additionalInfo{
+    display: flex;
+    position: absolute;
+    width: 100%;
+    bottom: 0px;
+    justify-content: center;
+}
+
+.additionalInfo p{
+    font-size: 13px;
+    color: #666666;
+    line-height: 1.5;
+}
+
+.additionalInfo p > a{
+    font-size: 13px;
+    color: #333333;
+    line-height: 1.5;
 }
