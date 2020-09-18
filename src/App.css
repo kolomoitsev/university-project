@@ -86,6 +86,7 @@
     justify-content: space-between;
     width: 100%;
 }
+
 .completeRegistration button{
     font-size: 14px !important;
     width: 100px !important;
@@ -298,4 +299,9 @@ input.Area:focus span{
     background-color: #6979F8;
     margin: 5px 0 0 0;
     outline: none !important;
+}
+
+.canvas-wrapper {
+    display: flex;
+    justify-content: center;
 }

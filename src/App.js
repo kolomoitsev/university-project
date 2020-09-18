@@ -2,7 +2,7 @@ import React from 'react';
 
 import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
 
-import {AuthPage, HomePage, RegisterPage} from "./pages/pages";
+import {AuthPage, HomePage, RegisterPage, LabelImg} from "./pages/pages";
 
 import PrivateRoute from './components/privateRoute.component'
 import GuestRoute from "./components/guestRoute.component";
@@ -17,7 +17,6 @@ const App = () => {
 
         <Router>
             <Switch>
-
                 <GuestRoute path={'/auth'} component={() => (<AuthPage/>)}/>
 
                 <GuestRoute path={"/register"} component={() => <RegisterPage/>}/>
