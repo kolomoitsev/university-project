@@ -3,6 +3,7 @@ import * as $ from 'jquery'
 
 import '../App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import {Link} from "react-router-dom";
 
 const EMAIL_REGEX_CHECK = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
@@ -76,20 +77,54 @@ const Auth = () => {
 
                 <form onSubmit={handleSubmit}>
 
-                    <input ref={emailRef} type="text" onChange={event => setEmail(event.target.value)}
-                           placeholder={'Enter your email'}/>
+                    <span>
+                        Welcome
+                    </span>
 
-                    <input ref={passwordRef} type="password" onChange={event => setPassword(event.target.value)}
-                           placeholder={'Enter your password'}/>
+
+                    <div className="inputGroup">
+
+
+                        <div className="Area user-input-wrp">
+                            <br/>
+                            <input
+                                type="text"
+                                className="inputText"
+                                ref={emailRef}
+                                onChange={event => setEmail(event.target.value)}
+                                required
+                            />
+                            <span className="floating-label">Email</span>
+                        </div>
+
+                        <div className="Area user-input-wrp">
+                            <br/>
+                            <input
+                                type="password"
+                                className="inputText"
+                                ref={passwordRef}
+                                onChange={event => setPassword(event.target.value)}
+                                required
+                            />
+                            <span className="floating-label">Password</span>
+                        </div>
+
+
+                    </div>
 
                     {validEmail && isPassword ?
                         <button type={'submit'}>
-                            Sign in
+                            Login
                         </button> :
                         <button disabled type={'submit'}>
-                            Sign in
+                            Login
                         </button>
                     }
+
+
+                    <div className="additionalInfo">
+                        <p>Don’t have an account?  <Link to={'/register'}> Sign Up</Link></p>
+                    </div>
 
                 </form>
 
