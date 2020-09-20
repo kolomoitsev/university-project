@@ -303,5 +303,13 @@ input.Area:focus span{
 
 .canvas-wrapper {
     display: flex;
+    max-width: 100%;
     justify-content: center;
+    background-image: url('./assets/img/test_img.png');
+    background-size: contain;
+    margin-top: 100px
+}
+
+.canvas-wrapper > canvas:hover {
+    cursor: pointer;
 }
