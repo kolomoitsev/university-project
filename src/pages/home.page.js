@@ -8,11 +8,11 @@ const HomePage = () => {
 
     const TOKEN = localStorage.getItem('token')
 
-    if(!TOKEN){
-        return(
-            <Redirect to={'/auth'} />
-        )
-    }
+    // if(!TOKEN){
+    //     return(
+    //         <Redirect to={'/auth'} />
+    //     )
+    // }
 
     return  (
         <div>
