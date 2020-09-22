@@ -30,6 +30,7 @@ const App = () => {
                 {/*<Route path="/">*/}
                 {/*    <HomePage/>*/}
                 {/*</Route>*/}
+
             </Switch>
         </Router>
 

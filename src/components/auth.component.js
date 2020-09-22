@@ -1,4 +1,6 @@
 import React, {createRef, useEffect, useState} from "react";
+import { Redirect } from 'react-router-dom';
+
 import {Link} from "react-router-dom";
 import axios from 'axios'
 import * as $ from 'jquery'
@@ -49,22 +51,24 @@ const Auth = () => {
 
             /* checking for password > 6 digits  */
 
-            if (password.length === 0) {
-                $(passwordRef.current).css({
-                    borderBottom: `3px solid grey`,
-                });
-                setIsPassword(false)
-            } else if (password.length > 6) {
-                $(passwordRef.current).css({
-                    borderBottom: `3px solid green`,
-                });
-                setIsPassword(true)
-            } else {
-                $(passwordRef.current).css({
-                    borderBottom: `3px solid red`,
-                });
-                setIsPassword(false)
-            }
+            //TODO: don't forget to delete comments of password validation
+            setIsPassword(true)
+            // if (password.length === 0) {
+            //     $(passwordRef.current).css({
+            //         borderBottom: `3px solid grey`,
+            //     });
+            //     setIsPassword(false)
+            // } else if (password.length > 6) {
+            //     $(passwordRef.current).css({
+            //         borderBottom: `3px solid green`,
+            //     });
+            //     setIsPassword(true)
+            // } else {
+            //     $(passwordRef.current).css({
+            //         borderBottom: `3px solid red`,
+            //     });
+            //     setIsPassword(false)
+            // }
 
         };
 
@@ -87,6 +91,9 @@ const Auth = () => {
             .catch(err => setAuthError(err))
     };
 
+    if (localStorage.getItem('token')){
+        return <Redirect to={'/'} ></Redirect>
+    }
 
     return (
         <div className="AuthComponent">
@@ -97,6 +104,7 @@ const Auth = () => {
                     <span>
                         Welcome
                     </span>
+
                     <div className="inputGroup">
                         <div className="Area user-input-wrp">
                             <br/>
@@ -124,9 +132,6 @@ const Auth = () => {
 
 
                     </div>
-
-
-
 
                     {validEmail && isPassword ?
                         <button ref={btnRef} type={'submit'}>

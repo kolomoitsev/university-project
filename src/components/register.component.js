@@ -2,9 +2,9 @@ import React, {createRef, useEffect, useState} from "react";
 import * as $ from 'jquery'
 
 import '../App.css';
+import {Link} from "react-router-dom";
 
 const EMAIL_REGEX_CHECK = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-
 
 const Register = () => {
 
@@ -162,57 +162,120 @@ const Register = () => {
 
     return (
         <div className="RegisterComponent">
+
             <div className="RegisterComponentWrapper">
 
                 <form onSubmit={handleRegister}>
 
+                    <span>
+                        Welcome
+                    </span>
+
                     <div ref={formFRef} className="RegisterStep step1">
 
-                        <input
-                            ref={nameRef}
-                            onChange={event => setName(event.target.value)}
-                            type="text"
-                            placeholder={'Enter your name'}/>
+                        <div className="inputGroup">
 
-                        <input
-                            ref={emailRef}
-                            onChange={event => setEmail(event.target.value)}
-                            type="text"
-                            placeholder={'Enter your email'}
-                        />
 
-                        {
-                            validName && validEmail ?
-                                <button type="button" onClick={(event) => showSecondPart()}>Next</button> :
-                                <button disabled type="button">Next</button>
-                        }
+                            <div className="Area user-input-wrp">
+                                <br/>
+                                <input
+                                    type="text"
+                                    className="inputText"
+                                    ref={nameRef}
+                                    onChange={event => setName(event.target.value)}
+                                    required
+                                />
+                                <span className="floating-label">Name</span>
+                            </div>
+
+                            <div className="Area user-input-wrp">
+                                <br/>
+                                <input
+                                    type="text"
+                                    className="inputText"
+                                    ref={emailRef}
+                                    onChange={event => setEmail(event.target.value)}
+                                    required
+                                />
+                                <span className="floating-label">Email</span>
+                            </div>
+
+
+                            {/*<input*/}
+                            {/*    ref={nameRef}*/}
+                            {/*    onChange={event => setName(event.target.value)}*/}
+                            {/*    type="text"*/}
+                            {/*    placeholder={'Enter your name'}/>*/}
+
+                            {/*<input*/}
+                            {/*    ref={emailRef}*/}
+                            {/*    onChange={event => setEmail(event.target.value)}*/}
+                            {/*    type="text"*/}
+                            {/*    placeholder={'Enter your email'}*/}
+                            {/*/>*/}
+
+                            {
+                                validName && validEmail ?
+                                    <button type="button" onClick={(event) => showSecondPart()}>Next</button> :
+                                    <button disabled type="button">Next</button>
+                            }
+
+                        </div>
+
+                        
 
                     </div>
 
                     <div ref={formSRef} className="RegisterStep step2">
 
-                        <input
-                            ref={passRef}
-                            onChange={event => setPass(event.target.value)}
-                            type="password"
-                            placeholder={'Enter your password'}
 
-                        />
+                        <div className="Area user-input-wrp">
+                            <br/>
+                            <input
+                                type="password"
+                                className="inputText"
+                                ref={passRef}
+                                onChange={event => setPass(event.target.value)}
+                                required
+                            />
+                            <span className="floating-label">Password</span>
+                        </div>
 
 
-                        <input
-                            ref={repeatRef}
-                            onChange={event => setRepeatPass(event.target.value)}
-                            type="password"
-                            placeholder={'Repeat password'}
+                        {/*<input*/}
+                        {/*    ref={passRef}*/}
+                        {/*    onChange={event => setPass(event.target.value)}*/}
+                        {/*    type="password"*/}
+                        {/*    placeholder={'Enter your password'}*/}
 
-                        />
+                        {/*/>*/}
+
+
+                        <div className="Area user-input-wrp">
+                            <br/>
+                            <input
+                                type="password"
+                                className="inputText"
+                                ref={repeatRef}
+                                onChange={event => setRepeatPass(event.target.value)}
+                                required
+                            />
+                            <span className="floating-label">Repeat Password</span>
+                        </div>
+
+                        {/*<input*/}
+                        {/*    ref={repeatRef}*/}
+                        {/*    onChange={event => setRepeatPass(event.target.value)}*/}
+                        {/*    type="password"*/}
+                        {/*    placeholder={'Repeat password'}*/}
+
+                        {/*/>*/}
 
                         <div className="passwordStrength">
                             <progress ref={meter} max="100" value="0" id="meter"></progress>
                         </div>
 
-                        <div className="buttonsWrapper">
+                        <div className="buttonsWrapper completeRegistration">
 
                             <button type={'button'} onClick={() => showFirstPart()}>Back</button>
 
@@ -227,6 +290,7 @@ const Register = () => {
 
 
                     </div>
+
 
 
                 </form>
