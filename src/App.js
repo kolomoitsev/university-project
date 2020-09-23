@@ -20,7 +20,7 @@ const App = () => {
 
                 <GuestRoute path={'/auth'} component={() => (<AuthPage/>)}/>
 
-                <Route path={"/register"} component={() => <RegisterPage/>}/>
+                <GuestRoute path={"/register"} component={() => <RegisterPage/>}/>
 
                 <PrivateRoute path="/" component={() => (<HomePage/>)}/>
 
