@@ -4,7 +4,7 @@ import TestImg from '../assets/img/test_img.png'
 import '../App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-class LabelImg extends React.Component {
+class ImgEditor extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -20,9 +20,9 @@ class LabelImg extends React.Component {
             ctxHeight: 0,
             XzoomCoefficient: 0,
             YzoomCoefficient: 0,
-            ctxBorderColor: props.color || 'green',
-            ctxBackColor: props.color || 'black',
-            ctxFontColor: props.color || 'white',
+            ctxBorderColor: props.borderColor || 'green',
+            ctxBackColor: props.backColor || 'black',
+            ctxFontColor: props.fontColor || 'white',
             ctxBorder: props.border || 5,
             coef: 1,
             error: ''
@@ -69,10 +69,10 @@ class LabelImg extends React.Component {
             let rectangles = this.state.rectangles
             rectangles.push({
                 id,
-                x: this.state.x,
-                y: this.state.y,
-                width,
-                height,
+                x: this.state.x * this.state.coef,
+                y: this.state.y * this.state.coef,
+                x2: x * this.state.coef,
+                y2: y * this.state.coef,
                 label: '',
                 regex: ''
             })
@@ -287,4 +287,4 @@ class LabelImg extends React.Component {
     }
 }
 
-export default LabelImg
+export default ImgEditor
