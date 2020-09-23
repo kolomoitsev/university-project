@@ -91,10 +91,6 @@ const Auth = () => {
             .catch(err => setAuthError(err))
     };
 
-    if (localStorage.getItem('token')){
-        return <Redirect to={'/'} ></Redirect>
-    }
-
     return (
         <div className="AuthComponent">
             <div className="AuthComponentWrapper">

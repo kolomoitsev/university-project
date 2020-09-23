@@ -1,10 +1,11 @@
 import React from 'react';
 
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
 
-import { AuthPage, HomePage, RegisterPage } from "./pages/pages";
+import {AuthPage, HomePage, RegisterPage} from "./pages/pages";
 
 import PrivateRoute from './components/privateRoute.component'
+import GuestRoute from "./components/guestRoute.component";
 
 import './App.css';
 
@@ -17,19 +18,13 @@ const App = () => {
         <Router>
             <Switch>
 
+                <GuestRoute path={'/auth'} component={() => (<AuthPage/>)}/>
 
-
-                <Route path="/auth">
-                    <AuthPage/>
-                </Route>
                 <Route path="/register">
                     <RegisterPage/>
                 </Route>
-                <PrivateRoute path="/" component={ () => (<HomePage/>) }/>
 
-                {/*<Route path="/">*/}
-                {/*    <HomePage/>*/}
-                {/*</Route>*/}
+                <PrivateRoute path="/" component={() => (<HomePage/>)}/>
 
             </Switch>
         </Router>
