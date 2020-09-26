@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
+import {BrowserRouter as Router, Switch} from "react-router-dom";
 
 import {AuthPage, HomePage, RegisterPage, ImgEditorPage} from "./pages/pages";
 
@@ -21,9 +21,9 @@ const App = () => {
 
                 <GuestRoute path={"/register"} component={() => <RegisterPage/>}/>
 
-                <PrivateRoute path="/" component={() => (<HomePage/>)}/>
-
                 <PrivateRoute path="/img-editor" component={() => (<ImgEditorPage/>)}/>
+
+                <PrivateRoute path="/" component={() => (<HomePage/>)}/>
             </Switch>
         </Router>
 
