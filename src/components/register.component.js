@@ -85,17 +85,17 @@ const Register = () => {
 
             if (name === '') {
                 $(nameRef.current).css({
-                    borderBottom: '3px solid #000',
+                    borderBottom: '1px solid #000',
                 });
                 setValidName(false)
             } else if (name.length < 4) {
                 $(nameRef.current).css({
-                    borderBottom: '3px solid red',
+                    borderBottom: '1px solid red',
                 });
                 setValidName(false)
             } else {
                 $(nameRef.current).css({
-                    borderBottom: '3px solid green',
+                    borderBottom: '1px solid green',
                 });
                 setValidName(true)
             }
@@ -104,17 +104,17 @@ const Register = () => {
 
             if (email.length < 5) {
                 $(emailRef.current).css({
-                    borderBottom: `3px solid grey`,
+                    borderBottom: `1px solid grey`,
                 });
                 setValidEmail(false)
             } else if (email.length > 5 && EMAIL_REGEX_CHECK.test(email)) {
                 $(emailRef.current).css({
-                    borderBottom: `3px solid green`,
+                    borderBottom: `1px solid green`,
                 });
                 setValidEmail(true)
             } else {
                 $(emailRef.current).css({
-                    borderBottom: `3px solid red`,
+                    borderBottom: `1px solid red`,
                 });
                 setValidEmail(false)
             }
@@ -124,12 +124,12 @@ const Register = () => {
 
             if (pass.length > 3 && pass !== repeatPass) {
                 $(repeatRef.current).css({
-                    borderBottom: `3px solid red`,
+                    borderBottom: `1px solid red`,
                 });
                 setValidPasses(false)
             } else if (pass.length > 3 && pass === repeatPass) {
                 $(repeatRef.current).css({
-                    borderBottom: `3px solid green`,
+                    borderBottom: `1px solid green`,
                 });
                 setValidPasses(true)
             }
@@ -220,6 +220,8 @@ const Register = () => {
                                     <button disabled type="button">Next</button>
                             }
 
+
+
                         </div>
 
                         
@@ -291,7 +293,9 @@ const Register = () => {
 
                     </div>
 
-
+                    <div className="additionalInfo">
+                        <p>Already have account? <Link to={'/auth'}> Sign In</Link></p>
+                    </div>
 
                 </form>
 

@@ -93,7 +93,7 @@
 }
 
 .step2{
-    margin: 50px 0;
+    margin: 100px 0 50px 0;
 }
 
 .AuthComponentWrapper input{
@@ -299,6 +299,13 @@ input.Area:focus span{
     background-color: #6979F8;
     margin: 5px 0 0 0;
     outline: none !important;
+}
+
+.RegisterStep .Area{
+    margin-bottom: 0;
+}
+
+.RegisterComponentWrapper .additionalInfo{
 }
 
 .canvas-wrapper {
