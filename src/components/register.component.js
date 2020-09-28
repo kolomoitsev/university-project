@@ -125,7 +125,7 @@ const Register = () => {
             /* check for pass && pass repeated */
 
 
-            if (pass.length > 3 && pass !== repeatPass) {
+            if (pass.length < 3 || pass !== repeatPass) {
                 $(repeatRef.current).css({
                     borderBottom: `1px solid red`,
                 });
@@ -136,7 +136,6 @@ const Register = () => {
                 });
                 setValidPasses(true)
             }
-
 
             /* check for passwordStrength */
 
@@ -159,7 +158,17 @@ const Register = () => {
             .then( res => {
                 window.location.href = '/'
             })
-            .catch(err => setRegisterError(err))
+            .catch( error => {
+
+                const { data } =  error.response
+
+                if( data.username[0] ){
+                    setRegisterError(data.username[0])
+                } else{
+                    setRegisterError(data.password[0])
+                }
+
+            })
 
     };
 
@@ -303,7 +312,9 @@ const Register = () => {
 
                         </div>
 
-                        { registerError ? <p> error  </p> : null }
+                        { registerError ? <p> { registerError }  </p> : null }
+
+
 
                     </div>
 
