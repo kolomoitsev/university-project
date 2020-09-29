@@ -88,7 +88,12 @@ const Auth = () => {
                 localStorage.setItem('refresh', res.data.refresh);
                 window.location.href = '/'
             })
-            .catch(err => setAuthError(err))
+            .catch(error => {
+
+                const { data } = error.response
+
+                setAuthError(data.detail)
+            })
     };
 
     return (
@@ -138,7 +143,7 @@ const Auth = () => {
                         </button>
                     }
 
-                    { authError ? <p> error </p> : null }
+                    { authError ? <p> { authError } </p> : null }
 
                     <div className="additionalInfo">
                         <p>Don’t have an account? <Link to={'/register'}> Sign Up</Link></p>

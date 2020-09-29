@@ -1,5 +1,6 @@
 import React, {createRef, useEffect, useState} from "react";
 import * as $ from 'jquery'
+import axios from 'axios'
 
 import '../App.css';
 import {Link} from "react-router-dom";
@@ -27,6 +28,8 @@ const Register = () => {
     const [validName, setValidName] = useState(false);
     const [validEmail, setValidEmail] = useState(false);
     const [validPasses, setValidPasses] = useState(false);
+
+    const [registerError, setRegisterError] = useState(null)
 
     function checkpassword(password) {
         var strength = 0;
@@ -122,18 +125,17 @@ const Register = () => {
             /* check for pass && pass repeated */
 
 
-            if (pass.length > 3 && pass !== repeatPass) {
+            if (pass.length < 3 || pass !== repeatPass) {
                 $(repeatRef.current).css({
                     borderBottom: `1px solid red`,
                 });
                 setValidPasses(false)
-            } else if (pass.length > 3 && pass === repeatPass) {
+            } else if (pass === repeatPass) {
                 $(repeatRef.current).css({
                     borderBottom: `1px solid green`,
                 });
                 setValidPasses(true)
             }
-
 
             /* check for passwordStrength */
 
@@ -147,7 +149,27 @@ const Register = () => {
 
     const handleRegister = event => {
         event.preventDefault();
-        console.log(name, email, pass, repeatPass)
+        //console.log(name, email, pass, repeatPass)
+
+        axios.post(`${process.env.REACT_APP_API_SERVER}/auth/users/`, {
+            username: email,
+            password: pass,
+        })
+            .then( res => {
+                window.location.href = '/'
+            })
+            .catch( error => {
+
+                const { data } =  error.response
+
+                if( data.username[0] ){
+                    setRegisterError(data.username[0])
+                } else{
+                    setRegisterError(data.password[0])
+                }
+
+            })
+
     };
 
     const showSecondPart = () => {
@@ -289,6 +311,9 @@ const Register = () => {
 
 
                         </div>
+
+                        { registerError ? <p> { registerError }  </p> : null }
+
 
 
                     </div>
