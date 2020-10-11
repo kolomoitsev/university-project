@@ -49,9 +49,7 @@ const HomePage = () => {
                 <h2 className="mb-3 font-weight-bold ">Last templates</h2>
 
                 <div className="row">
-                    {
-                        data && data.map(item => <ProjectBlock data={item}/>)
-                    }
+                    { data && data.map(item => <ProjectBlock data={item}/>) }
                 </div>
 
             </div>

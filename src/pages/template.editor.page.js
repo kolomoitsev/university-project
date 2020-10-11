@@ -10,9 +10,9 @@ const TemplateEditorPage = () => {
         <div>
             <Header />
             <div className="main">
-                <div className="container mt-3">
-                    <div className="row">
-                        <h2 className="mb-3 font-weight-bold ">Edit template</h2>
+                <div className="container mt-5">
+                    <div className="row d-flex justify-content-center">
+                        <h2 className=" mb-3 font-weight-bold ">Edit template</h2>
                     </div>
                 </div>
                 <ImgEditor

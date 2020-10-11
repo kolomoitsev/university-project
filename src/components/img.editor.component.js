@@ -246,18 +246,35 @@ class ImgEditor extends React.Component {
             <div>
                 <div className="container">
                     <div className="row">
-                        <div className="col-md-6">
-                            <div className="form-group">
+                        <div className="col-md-6 mx-auto">
+                            <div className="form-group ">
                                 <label htmlFor="inputTitle">Template name</label>
                                 <input type="email" className="form-control" id="inputTitle"/>
                             </div>
-                        </div>
-                        <div className="col-md-6">
                             <div className="form-group">
                                 <label htmlFor="inputDescription">Template description</label>
                                 <textarea className="form-control" id="inputDescription" rows="3"></textarea>
                             </div>
+
+                            <div className="input-group mb-3">
+                                <select className="custom-select" id="inputGroupSelect04">
+                                    <option selected>Select language</option>
+                                    <option value="1">en</option>
+                                    <option value="2">uk</option>
+                                    <option value="3">fr</option>
+                                </select>
+                            </div>
+
+                            <div className="form-group">
+                                <label htmlFor="documentName">Document name</label>
+                                <input type="text" disabled={true} value={'123'} className="form-control" id="documentName"/>
+                            </div>
+
+                            <div className="form-group text-right">
+                                <button type="button" className="btn customBtn">Save</button>
+                            </div>
                         </div>
+
                         <div className="col-12">
                             <h2 className="text-center">Document image</h2>
                         </div>

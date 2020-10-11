@@ -2,7 +2,7 @@ import React from 'react';
 
 import {BrowserRouter as Router, Switch, Route} from "react-router-dom";
 
-import {AuthPage, HomePage, RegisterPage, TemplateEditorPage, TemplatesPage, ParsePage} from "./pages/pages";
+import {AuthPage, HomePage, RegisterPage, TemplateEditorPage, TemplatesPage, ParsePage, ParseHistoryPage} from "./pages/pages";
 
 import PrivateRoute from './components/privateRoute.component'
 import GuestRoute from "./components/guestRoute.component";
@@ -26,6 +26,8 @@ const App = () => {
                 <Route path="/templates" component={() => (<TemplatesPage/>)}/>
 
                 <Route path="/parse" component={() => (<ParsePage/>)}/>
+
+                <Route path="/history" component={ () => (<ParseHistoryPage />) } />
 
                 <Route path="/" component={() => (<HomePage/>)}/>
             </Switch>

@@ -16,7 +16,7 @@ const Header  = () => {
                 <div className="col-md-9 headerMenu">
                     <ul>
                         <li><a href="/parse">Parse document</a></li>
-                        <li><a href="/profile">Parse history</a></li>
+                        <li><a href="/history">Parse history</a></li>
                         <li><a href="/templates">Templates</a></li>
                         <li><a className="signoutBtn customBtn" href="/">Sign out</a></li>
                     </ul>
