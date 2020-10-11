@@ -1,3 +1,7 @@
+.main {
+    min-height: calc(100vh - 150px);
+}
+
 .AuthComponent {
     display: flex;
     position: relative;
@@ -321,7 +325,7 @@ input.Area:focus span{
     justify-content: center;
     background-image: url('./assets/img/test_img.png');
     background-size: contain;
-    margin-top: 100px
+    margin-top: 20px
 }
 
 .canvas-wrapper > canvas:hover {
@@ -340,7 +344,6 @@ input.Area:focus span{
 
 .HeaderMain{
     height: 75px;
-    background-color: #e0e0e0;
 }
 
 
@@ -375,8 +378,6 @@ input.Area:focus span{
     font-weight: 400;
 }
 .signoutBtn{
-    background-color: #6979F8 !important;
-    color: #fff !important;
     padding: 8px 15px;
     border-radius: 5px;
 }
@@ -425,8 +426,12 @@ input.Area:focus span{
     border-radius: 5px;
 }
 
+.customBtn:hover {
+    background-color: #4e62ff !important;
+}
+
 .customBg{
-    background-color: #e0e0e0;
+    background-color: #f1f1f1;
 }
 .page-footer{
     border-top: 1px solid #ccc;
@@ -449,4 +454,13 @@ input.Area:focus span{
 .icon i{
     color: #ffff;
     font-size: 22px;
+}
+
+.parse-block {
+    margin-top: 100px;
+}
+
+.parse-block i {
+    font-size: 70px;
+    color: #6979F8;
 }

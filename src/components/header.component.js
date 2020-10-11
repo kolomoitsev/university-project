@@ -6,7 +6,7 @@ import logo from '../assets/img/avpz-logo.png'
 const Header  = () => {
 
     return  (
-        <div className="container-fluid HeaderMain">
+        <div className="container-fluid HeaderMain customBg">
             <div className="row h-100">
                 <div className="col-md-3 headerLogo">
                     <a href="/">
@@ -15,9 +15,10 @@ const Header  = () => {
                 </div>
                 <div className="col-md-9 headerMenu">
                     <ul>
-                        <li><a href="">Projects</a></li>
-                        <li><a href="">Profile</a></li>
-                        <li><a className="signoutBtn" href="">Sign out</a></li>
+                        <li><a href="/parse">Parse document</a></li>
+                        <li><a href="/profile">Parse history</a></li>
+                        <li><a href="/templates">Templates</a></li>
+                        <li><a className="signoutBtn customBtn" href="/">Sign out</a></li>
                     </ul>
                 </div>
             </div>

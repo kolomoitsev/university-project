@@ -244,6 +244,25 @@ class ImgEditor extends React.Component {
     render() {
         return (
             <div>
+                <div className="container">
+                    <div className="row">
+                        <div className="col-md-6">
+                            <div className="form-group">
+                                <label htmlFor="inputTitle">Template name</label>
+                                <input type="email" className="form-control" id="inputTitle"/>
+                            </div>
+                        </div>
+                        <div className="col-md-6">
+                            <div className="form-group">
+                                <label htmlFor="inputDescription">Template description</label>
+                                <textarea className="form-control" id="inputDescription" rows="3"></textarea>
+                            </div>
+                        </div>
+                        <div className="col-12">
+                            <h2 className="text-center">Document image</h2>
+                        </div>
+                    </div>
+                </div>
                 <div className="canvas-wrapper" ref="canvasWrapper">
                     <canvas
                         ref="canvas"
@@ -278,7 +297,7 @@ class ImgEditor extends React.Component {
                             </div>
                         }
                         <div className="col-md-2 text-center offset-md-5 mb-4 mt-2">
-                            <button type="button" className="btn btn-success" onClick={this.handleSubmit}>Finish</button>
+                            <button type="button" className="btn customBtn" onClick={this.handleSubmit}>Save</button>
                         </div>
                     </div>
                 }

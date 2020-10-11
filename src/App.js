@@ -2,7 +2,7 @@ import React from 'react';
 
 import {BrowserRouter as Router, Switch, Route} from "react-router-dom";
 
-import {AuthPage, HomePage, RegisterPage, ImgEditorPage} from "./pages/pages";
+import {AuthPage, HomePage, RegisterPage, TemplateEditorPage, TemplatesPage, ParsePage} from "./pages/pages";
 
 import PrivateRoute from './components/privateRoute.component'
 import GuestRoute from "./components/guestRoute.component";
@@ -21,7 +21,11 @@ const App = () => {
 
                 <GuestRoute path={"/register"} component={() => <RegisterPage/>}/>
 
-                <PrivateRoute path="/img-editor" component={() => (<ImgEditorPage/>)}/>
+                <Route path="/templates/:id" component={() => (<TemplateEditorPage/>)}/>
+
+                <Route path="/templates" component={() => (<TemplatesPage/>)}/>
+
+                <Route path="/parse" component={() => (<ParsePage/>)}/>
 
                 <Route path="/" component={() => (<HomePage/>)}/>
             </Switch>

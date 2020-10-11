@@ -9,28 +9,28 @@ const HomePage = () => {
     const data = [
         {
             img: 'https://rojo-studio.com/wp-content/uploads/project-img-5.jpg',
-            title: 'AVpz task 1',
+            title: 'AVpz template 1',
             description: `Lorem Ipsum - это текст-"рыба", часто используемый в печати и вэб-дизайне. 
                 Lorem Ipsum является стандартной "рыбой" для текстов на латинице с начала XVI века.`,
             ready: false,
         },
         {
             img: 'https://rojo-studio.com/wp-content/uploads/project-img-5.jpg',
-            title: 'AVpz task 2',
+            title: 'AVpz template 2',
             description: `Lorem Ipsum - это текст-"рыба", часто используемый в печати и вэб-дизайне. 
                 Lorem Ipsum является стандартной "рыбой" для текстов на латинице с начала XVI века.`,
             ready: false,
         },
         {
             img: 'https://rojo-studio.com/wp-content/uploads/project-img-5.jpg',
-            title: 'AVpz task 3',
+            title: 'AVpz template 3',
             description: `Lorem Ipsum - это текст-"рыба", часто используемый в печати и вэб-дизайне. 
                 Lorem Ipsum является стандартной "рыбой" для текстов на латинице с начала XVI века.`,
             ready: true,
         },
         {
             img: 'https://rojo-studio.com/wp-content/uploads/project-img-5.jpg',
-            title: 'AVpz task 4',
+            title: 'AVpz template 4',
             description: `Lorem Ipsum - это текст-"рыба", часто используемый в печати и вэб-дизайне. 
                 Lorem Ipsum является стандартной "рыбой" для текстов на латинице с начала XVI века.`,
             ready: true,
@@ -46,7 +46,7 @@ const HomePage = () => {
 
             <div className="container mt-3">
 
-                <h2 className="mb-3 font-weight-bold ">Last projects</h2>
+                <h2 className="mb-3 font-weight-bold ">Last templates</h2>
 
                 <div className="row">
                     {
@@ -55,8 +55,6 @@ const HomePage = () => {
                 </div>
 
             </div>
-
-            <hr/>
 
             <CreateNewProject/>
 
