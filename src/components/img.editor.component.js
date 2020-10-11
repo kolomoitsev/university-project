@@ -74,7 +74,9 @@ class ImgEditor extends React.Component {
                 x2: x * this.state.coef,
                 y2: y * this.state.coef,
                 label: '',
-                regex: ''
+                regex: '',
+                jsonName: '',
+                side: ''
             })
 
             this.setState((state) => ({
@@ -222,7 +224,7 @@ class ImgEditor extends React.Component {
 
     validateInputs = () => {
         const validRectangles = this.state.rectangles.filter(rec => {
-            return rec.label.length >= 3
+            return rec.label.length >= 3 && rec.jsonName.length
         })
 
         return validRectangles.length === this.state.rectangles.length
@@ -295,12 +297,24 @@ class ImgEditor extends React.Component {
                         return <div key={rec.id} className="col-md-3">
                                     <form>
                                         <div className="form-group">
-                                        <h4>Aria #{rec.id}</h4>
-                                        <label>Label (required)</label>
-                                        <input type="text" onChange={this.handleInput} className="form-control" data-id={`${rec.id}`} data-type="label" placeholder="Field 1"></input>
-                                        <label>Regex (optional)</label>
-                                        <input type="text" onChange={this.handleInput} className="form-control" data-id={`${rec.id}`} data-type="regex" placeholder="%^abc%"></input>
-                                        <small className="form-text text-muted">Regular expression for the data</small>
+                                            <h4>Aria #{rec.id}</h4>
+                                            <label>Label (required)</label>
+                                            <input type="text" onChange={this.handleInput} className="form-control" data-id={`${rec.id}`} data-type="label" placeholder="Field 1"></input>
+                                            <label>JSON name (required)</label>
+                                            <input type="text" onChange={this.handleInput} className="form-control" data-id={`${rec.id}`} data-type="jsonName" placeholder="json_name"></input>
+                                            <label>Side (optional)</label>
+                                            <div className="input-group mb-3">
+                                                <select className="custom-select" id="inputGroupSelect04">
+                                                    <option selected>Select...</option>
+                                                    <option value="right">right</option>
+                                                    <option value="left">left</option>
+                                                    <option value="top">top</option>
+                                                    <option value="bottom">bottom</option>
+                                                </select>
+                                            </div>
+                                            <label>Regex (optional)</label>
+                                            <input type="text" onChange={this.handleInput} className="form-control" data-id={`${rec.id}`} data-type="regex" placeholder="%^abc%"></input>
+                                            <small className="form-text text-muted">Regular expression for the data</small>
                                         </div>
                                     </form>
                                 </div>
