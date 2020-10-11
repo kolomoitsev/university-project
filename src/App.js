@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {BrowserRouter as Router, Switch} from "react-router-dom";
+import {BrowserRouter as Router, Switch, Route} from "react-router-dom";
 
 import {AuthPage, HomePage, RegisterPage, ImgEditorPage} from "./pages/pages";
 
@@ -23,7 +23,7 @@ const App = () => {
 
                 <PrivateRoute path="/img-editor" component={() => (<ImgEditorPage/>)}/>
 
-                <PrivateRoute path="/" component={() => (<HomePage/>)}/>
+                <Route path="/" component={() => (<HomePage/>)}/>
             </Switch>
         </Router>
 

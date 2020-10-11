@@ -5,6 +5,8 @@ import {Link} from "react-router-dom";
 import axios from 'axios'
 import * as $ from 'jquery'
 
+import logo from '../../src/assets/img/avpz-logo.png'
+
 import '../App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -105,6 +107,8 @@ const Auth = () => {
                     <span>
                         Welcome
                     </span>
+
+                    <img src={logo} alt=""/>
 
                     <div className="inputGroup">
                         <div className="Area user-input-wrp">

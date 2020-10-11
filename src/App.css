@@ -37,6 +37,7 @@
     flex-direction: column;
     width: 100%;
     height: 100%;
+    justify-content: center;
 }
 
 .AuthComponentWrapper form > input, .AuthComponentWrapper form > button {
@@ -123,7 +124,7 @@
 .inputGroup{
     display: block;
     position: relative;
-    margin: 120px 0 0 0 ;
+    margin: 60px 0 0 0 ;
     width: 100%;
 }
 
@@ -274,9 +275,15 @@ input.Area:focus span{
     flex-direction: column;
     width: 100%;
     height: 100%;
+    justify-content: center;
 }
 
-
+.RegisterComponentWrapper img{
+    display: block;
+    position: relative;
+    width: 100%;
+    height: auto;
+}
 
 .RegisterComponentWrapper button{
     width: 100%;
@@ -319,4 +326,127 @@ input.Area:focus span{
 
 .canvas-wrapper > canvas:hover {
     cursor: pointer;
+}
+
+.AuthComponentWrapper img {
+
+    display: block;
+    position: relative;
+    width: 100%;
+    height: auto;
+
+}
+
+
+.HeaderMain{
+    height: 75px;
+    background-color: #e0e0e0;
+}
+
+
+.headerLogo a {
+    display: flex;
+    height: 60px;
+    margin: 5px 0;
+}
+
+.headerLogo img {
+    display: flex;
+    width: 100%;
+    height: auto;
+}
+
+.headerMenu ul {
+    list-style-type: none;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    height: 100%;
+    align-items: center;
+}
+
+.headerMenu ul  > li {
+    padding: 0 30px;
+}
+
+.headerMenu ul  > li > a{
+    text-decoration: none!important;
+    color: #000;
+    font-weight: 400;
+}
+.signoutBtn{
+    background-color: #6979F8 !important;
+    color: #fff !important;
+    padding: 8px 15px;
+    border-radius: 5px;
+}
+
+.projectBlockItem{
+    display: block;
+    position: relative;
+    width: 100%;
+    
+}
+
+.projectBlockItem a{
+    display: flex;
+    position: relative;
+    height: 100%;
+    width: 100%;
+    flex-direction: column;
+    text-decoration: none !important;
+}
+
+.projectBlockItem a > img{
+    display: block;
+    position: relative;
+    width: 100%;
+    height: 200px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.3);
+
+}
+
+.projectBlockItem a > h5{
+    color: #000;
+    font-weight: 600;
+    margin: 5px 0;
+}
+
+.projectBlockItem a > p{
+    color: #000;
+    font-size: 14px;
+}
+
+.customBtn{
+    background-color: #6979F8 !important;
+    color: #fff !important;
+    padding: 8px 15px;
+    border-radius: 5px;
+}
+
+.customBg{
+    background-color: #e0e0e0;
+}
+.page-footer{
+    border-top: 1px solid #ccc;
+}
+.page-footer a{
+    color: #6979F8;
+    text-decoration: none !important;
+}
+
+.icon{
+    display: block;
+    position: absolute;
+    width: 25px;
+    height: 25px;
+    z-index: 9999;
+    right: 5px;
+    top: 5px;
+}
+
+.icon i{
+    color: #ffff;
+    font-size: 22px;
 }

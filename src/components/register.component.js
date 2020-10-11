@@ -5,6 +5,9 @@ import axios from 'axios'
 import '../App.css';
 import {Link} from "react-router-dom";
 
+import logo from '../../src/assets/img/avpz-logo.png'
+
+
 const EMAIL_REGEX_CHECK = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
 const Register = () => {
@@ -192,6 +195,8 @@ const Register = () => {
                     <span>
                         Welcome
                     </span>
+
+                    <img src={logo} alt=""/>
 
                     <div ref={formFRef} className="RegisterStep step1">
 
