@@ -1,65 +1,61 @@
 import React from "react";
-
+import axios from 'axios'
 import {Header, ProjectBlock, CreateNewProject, Footer} from "../components/componets";
 
 import '../App.css';
 
-const HomePage = () => {
+const token = localStorage.getItem('token')
 
-    const data = [
-        {
-            img: 'https://rojo-studio.com/wp-content/uploads/project-img-5.jpg',
-            title: 'AVpz template 1',
-            description: `Lorem Ipsum - это текст-"рыба", часто используемый в печати и вэб-дизайне. 
-                Lorem Ipsum является стандартной "рыбой" для текстов на латинице с начала XVI века.`,
-            ready: false,
-        },
-        {
-            img: 'https://rojo-studio.com/wp-content/uploads/project-img-5.jpg',
-            title: 'AVpz template 2',
-            description: `Lorem Ipsum - это текст-"рыба", часто используемый в печати и вэб-дизайне. 
-                Lorem Ipsum является стандартной "рыбой" для текстов на латинице с начала XVI века.`,
-            ready: false,
-        },
-        {
-            img: 'https://rojo-studio.com/wp-content/uploads/project-img-5.jpg',
-            title: 'AVpz template 3',
-            description: `Lorem Ipsum - это текст-"рыба", часто используемый в печати и вэб-дизайне. 
-                Lorem Ipsum является стандартной "рыбой" для текстов на латинице с начала XVI века.`,
-            ready: true,
-        },
-        {
-            img: 'https://rojo-studio.com/wp-content/uploads/project-img-5.jpg',
-            title: 'AVpz template 4',
-            description: `Lorem Ipsum - это текст-"рыба", часто используемый в печати и вэб-дизайне. 
-                Lorem Ipsum является стандартной "рыбой" для текстов на латинице с начала XVI века.`,
-            ready: true,
+class HomePage extends React.Component {
+
+    constructor(props) {
+        super(props)
+
+        this.state = {
+            templates: [],
+            token: ''
         }
+    }
 
-    ];
+    componentDidMount() {
+        axios({
+            method: 'get',
+            url: `${process.env.REACT_APP_API_SERVER}/structures/`,
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+            })
+            .then( res => {
+                this.setState(prev => ({
+                    ...prev,
+                    templates: res.data.results,
+                }))
+            })
+    }
 
-    const TOKEN = localStorage.getItem('token');
-
-    return (
-        <>
-            <Header/>
-
-            <div className="container mt-3">
-
-                <h2 className="mb-3 font-weight-bold ">Last templates</h2>
-
-                <div className="row">
-                    { data && data.map(item => <ProjectBlock data={item}/>) }
+    render() {
+        return (
+            <>
+                <Header/>
+    
+                <div className="container mt-3">
+    
+                    <h2 className="mb-3 font-weight-bold ">Last templates</h2>
+    
+                    <div className="row">
+                        { this.state.templates.length > 0 && this.state.templates.map(item => <ProjectBlock key={item.id} data={item}/>) }
+                    </div>
+    
                 </div>
+    
+                <CreateNewProject/>
+    
+                <Footer/>
+    
+            </>
+        )
+    }
 
-            </div>
-
-            <CreateNewProject/>
-
-            <Footer/>
-
-        </>
-    )
 };
 
 export default HomePage

@@ -5,6 +5,11 @@ import logo from '../assets/img/avpz-logo.png'
 
 const Header  = () => {
 
+    function logout() {
+        localStorage.removeItem('token')
+        window.location.href = '/auth'
+    }
+
     return  (
         <div className="container-fluid HeaderMain customBg">
             <div className="row h-100">
@@ -18,7 +23,7 @@ const Header  = () => {
                         <li><a href="/parse">Parse document</a></li>
                         <li><a href="/history">Parse history</a></li>
                         <li><a href="/templates">Templates</a></li>
-                        <li><a className="signoutBtn customBtn" href="/">Sign out</a></li>
+                        <li><a className="signoutBtn customBtn" onClick={logout}>Sign out</a></li>
                     </ul>
                 </div>
             </div>
