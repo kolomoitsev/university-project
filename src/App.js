@@ -21,15 +21,15 @@ const App = () => {
 
                 <GuestRoute path={"/register"} component={() => <RegisterPage/>}/>
 
-                <Route path="/templates/:id" component={() => (<TemplateEditorPage/>)}/>
+                <PrivateRoute path="/templates/:id" component={() => (<TemplateEditorPage/>)}/>
 
-                <Route path="/templates" component={() => (<TemplatesPage/>)}/>
+                <PrivateRoute path="/templates" component={() => (<TemplatesPage/>)}/>
 
-                <Route path="/parse" component={() => (<ParsePage/>)}/>
+                <PrivateRoute path="/parse" component={() => (<ParsePage/>)}/>
 
-                <Route path="/history" component={ () => (<ParseHistoryPage />) } />
+                <PrivateRoute path="/history" component={ () => (<ParseHistoryPage />) } />
 
-                <Route path="/" component={() => (<HomePage/>)}/>
+                <PrivateRoute path="/" component={() => (<HomePage/>)}/>
             </Switch>
         </Router>
 

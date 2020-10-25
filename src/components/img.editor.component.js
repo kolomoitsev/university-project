@@ -1,13 +1,17 @@
 import React from "react";
+import axios from 'axios'
 import TestImg from '../assets/img/test_img.png'
 
 import '../App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
+const token = localStorage.getItem('token')
+
 class ImgEditor extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            id: '',
             ctx: null,
             x: null,
             y: null,
@@ -25,11 +29,42 @@ class ImgEditor extends React.Component {
             ctxFontColor: props.fontColor || 'white',
             ctxBorder: props.border || 5,
             coef: 1,
-            error: ''
+            error: '',
+            name: '',
+            lang: '',
+            description: '',
+            image: '',
+            imageName: ''
         };
     }
 
     componentDidMount() {
+        const token = localStorage.getItem('token')
+
+        // TODO: replace with good solution
+        const id = window.location.pathname.split('/')[2]
+        axios({
+            method: 'get',
+            url: `${process.env.REACT_APP_API_SERVER}/structures/${id}`,
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+            })
+            .then( res => {
+                const { name, description, lang, image, documentfield_set } = res.data
+                const imageName = image.split('/')[4]
+                this.setState(prev => ({
+                    ...prev,
+                    id,
+                    name,
+                    description,
+                    lang,
+                    image: `http://127.0.0.1:8000${image}`,
+                    imageName,
+                    recatangles: documentfield_set
+                }))
+            })
+
         this.initializeCanvas()
     }
 
@@ -251,25 +286,27 @@ class ImgEditor extends React.Component {
                         <div className="col-md-6 mx-auto">
                             <div className="form-group ">
                                 <label htmlFor="inputTitle">Template name</label>
-                                <input type="email" className="form-control" id="inputTitle"/>
+                                <input type="text" value={this.state.name} className="form-control" id="inputTitle"/>
                             </div>
                             <div className="form-group">
                                 <label htmlFor="inputDescription">Template description</label>
-                                <textarea className="form-control" id="inputDescription" rows="3"></textarea>
+                                <textarea value={this.state.description} className="form-control" id="inputDescription" rows="3"></textarea>
                             </div>
 
-                            <div className="input-group mb-3">
-                                <select className="custom-select" id="inputGroupSelect04">
-                                    <option selected>Select language</option>
-                                    <option value="1">en</option>
-                                    <option value="2">uk</option>
-                                    <option value="3">fr</option>
-                                </select>
+                            <div className="form-group">
+                                <label htmlFor="documentName">Document language</label>
+                                <div className="input-group mb-3">
+                                    <select disabled={true} defaultValue={this.state.lang} className="custom-select" id="inputGroupSelect04">
+                                        <option value="eng">eng</option>
+                                        <option value="rus">rus</option>
+                                        <option value="de">de</option>
+                                    </select>
+                                </div>  
                             </div>
 
                             <div className="form-group">
                                 <label htmlFor="documentName">Document name</label>
-                                <input type="text" disabled={true} value={'123'} className="form-control" id="documentName"/>
+                                <input type="text" disabled={true} value={this.state.imageName} className="form-control" id="documentName"/>
                             </div>
 
                             <div className="form-group text-right">
@@ -282,15 +319,15 @@ class ImgEditor extends React.Component {
                         </div>
                     </div>
                 </div>
-                <div className="canvas-wrapper" ref="canvasWrapper">
+                <div className="canvas-wrapper" ref="canvasWrapper" style={{ background: `url(${this.state.image})`, backgroundSize: 'contain' }}>
                     <canvas
                         ref="canvas"
                         onClick={this.setPoint}
                         width={this.state.ctxWidth} height={this.state.ctxHeight}
-                        style={{ background: '../assets/img/test_img.png' }}
+                        style={{ background: `url(${this.state.image})`, backgroundSize: 'contain' }}
                         onPointerMove={this.omPointerMove}
                     />
-                    <img ref="image" src={TestImg} className="d-none" />
+                    <img ref="image" src={this.state.image} className="d-none" />
                 </div>
                 <div className="row m-0">
                     { this.state.rectangles.map(rec => {
