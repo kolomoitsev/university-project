@@ -467,3 +467,24 @@ input.Area:focus span{
     font-size: 70px;
     color: #6979F8;
 }
+
+.field-form {
+    position: relative;
+}
+
+.loading {
+    position: absolute;
+    top: -5px;
+    bottom: -5px;
+    left: -5px;
+    border-radius: 5px;
+    right: -5px;
+    z-index: 9999;
+    background-color: #000;
+    opacity: 0.3;
+    text-align: center;
+}
+
+.loading > .spinner-border {
+    margin-top: 160px;
+}

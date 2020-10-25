@@ -3,6 +3,7 @@ import axios from 'axios'
 import '../App.css'
 import { bindMethods } from '../utils/bindMethods'
 
+const token = localStorage.getItem('token')
 
 class CreateNewProject extends React.Component {
     constructor(props) {
@@ -14,7 +15,6 @@ class CreateNewProject extends React.Component {
             image_file: null,
             lang: 'eng',
             error: '',
-            token: localStorage.getItem('token')
         }
 
         bindMethods(this, ['handleInput', 'handleImage', 'handleSubmit'])
@@ -54,7 +54,7 @@ class CreateNewProject extends React.Component {
                 data: formData,
                 headers: {
                     'Content-Type': 'multipart/form-data',
-                    'Authorization': `Bearer ${this.state.token}`
+                    'Authorization': `Bearer ${token}`
                 }
                 })
                 .then( res => {

@@ -10,6 +10,7 @@ const token = localStorage.getItem('token')
 class ImgEditor extends React.Component {
     constructor(props) {
         super(props);
+
         this.state = {
             id: '',
             ctx: null,
@@ -34,8 +35,10 @@ class ImgEditor extends React.Component {
             lang: '',
             description: '',
             image: '',
-            imageName: ''
+            imageName: '',
+            loadingFieldIndex: -1
         };
+
     }
 
     componentDidMount() {
@@ -61,11 +64,20 @@ class ImgEditor extends React.Component {
                     lang,
                     image: `http://127.0.0.1:8000${image}`,
                     imageName,
-                    recatangles: documentfield_set
+                    rectangles: documentfield_set
                 }))
-            })
 
-        this.initializeCanvas()
+                this.initializeCanvas()
+
+                setTimeout(() => {
+                    this.state.rectangles.forEach((rec, index) => {
+                        let min_x = rec.min_x / this.state.coef
+                        let min_y = rec.min_y / this.state.coef
+                        let { width, height } = this.calcWidthAndHeight(min_x, rec.max_x / this.state.coef, min_y, rec.max_y / this.state.coef)
+                        this.drawRectangle(min_x, min_y, width, height, index + 1)
+                    })
+                }, 1000)
+            })
     }
 
     initializeCanvas = () => {
@@ -76,6 +88,7 @@ class ImgEditor extends React.Component {
         let heightOffset = this.getOffset(canvasWrapper)
 
         ctx.font = "30px Arial";
+        ctx.fillStyle = this.state.ctxBorderColor
 
         img.onload = () => {
             let coef = img.width / windowWidth
@@ -101,16 +114,32 @@ class ImgEditor extends React.Component {
 
             this.drawRectangle(this.state.x, this.state.y, width, height, id)
 
+            const min_x = Math.round(this.state.x * this.state.coef)
+            const min_y = Math.round(this.state.y * this.state.coef)
+            const max_x = Math.round(x * this.state.coef)
+            const max_y = Math.round(y * this.state.coef)
+
+            this.addField({
+                name: `Label ${this.state.rectangles.length + 1}`,
+                json_name: `label_${this.state.rectangles.length + 1}`,
+                side: 'RIGHT',
+                min_x,
+                min_y,
+                max_x,
+                max_y,
+                structure: this.state.id
+            })
+
             let rectangles = this.state.rectangles
             rectangles.push({
                 id,
-                x: this.state.x * this.state.coef,
-                y: this.state.y * this.state.coef,
-                x2: x * this.state.coef,
-                y2: y * this.state.coef,
-                label: '',
-                regex: '',
-                jsonName: '',
+                min_x,
+                min_y,
+                max_x,
+                max_y,
+                name: '',
+                regexp: '',
+                json_name: '',
                 side: ''
             })
 
@@ -133,12 +162,14 @@ class ImgEditor extends React.Component {
                 isDrawing: !state.isDrawing
             }))
 
-            this.state.ctx.fillStyle = this.state.ctxBorderColor;
+            //this.state.ctx.fillStyle = this.state.ctxBorderColor;
             this.state.ctx.fillRect(x,y,10,10);
         }
     }
 
     drawRectangle(x, y, width, height, text) {
+        console.log('DRAWING RECTANGLE')
+
         // Clear aria before
         this.state.ctx.clearRect(
             x,
@@ -235,6 +266,29 @@ class ImgEditor extends React.Component {
         return y;
     }
 
+    handleFocus =(event) => {
+        const input  = event.target,
+        type = input.dataset.type,
+        id = input.dataset.id
+
+        const recIndex = this.state.rectangles.findIndex(rec => rec.id == id)
+
+        if (recIndex !== -1) {
+            const updatedRectangle = this.state.rectangles[recIndex]
+            const prevValue = updatedRectangle[type]
+
+            updatedRectangle.prevValue = prevValue
+
+            const rectangles = this.state.rectangles
+            rectangles[recIndex] = updatedRectangle
+
+            this.setState((state) => ({
+                ...state,
+                rectangles,
+            }))
+        }
+    }
+
     handleInput = (event) => {
         const input  = event.target,
             value = input.value,
@@ -245,6 +299,7 @@ class ImgEditor extends React.Component {
 
         if (recIndex !== -1) {
             const updatedRectangle = this.state.rectangles[recIndex]
+
             updatedRectangle[type] = value
 
             const rectangles = this.state.rectangles
@@ -254,6 +309,52 @@ class ImgEditor extends React.Component {
                 ...state,
                 rectangles
             }))
+        }
+    }
+
+    saveInput = (event) => {
+        const input  = event.target,
+        value = input.value,
+        type = input.dataset.type,
+        id = input.dataset.id
+
+        const recIndex = this.state.rectangles.findIndex(rec => rec.id == id)
+
+        if (recIndex !== -1) {
+            this.setState(prev => ({
+                ...prev,
+                loadingFieldIndex: recIndex
+            }))
+
+            const updatedRectangle = this.state.rectangles[recIndex]
+
+            const rectangles = this.state.rectangles
+            rectangles[recIndex] = updatedRectangle
+
+            axios({
+                method: 'put',
+                url: `${process.env.REACT_APP_API_SERVER}/fields/${updatedRectangle.id}/`,
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                },
+                data: updatedRectangle
+                })
+                .then( res => {
+                    console.log('SAVED', res)
+                })
+                .catch(err => {
+                    updatedRectangle[type] = updatedRectangle.prevValue
+                })
+                .finally(() => {
+                    const rectangles = this.state.rectangles
+                    rectangles[recIndex] = updatedRectangle
+    
+                    this.setState((state) => ({
+                        ...state,
+                        rectangles,
+                        loadingFieldIndex: -1
+                    }))
+                })
         }
     }
 
@@ -276,6 +377,24 @@ class ImgEditor extends React.Component {
                 error: 'All labels are required!'
             }))
         }
+    }
+
+    addField(data) {
+        axios({
+            method: 'post',
+            url: `${process.env.REACT_APP_API_SERVER}/fields/`,
+            data: data,
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            }
+            })
+            .then( res => {
+                console.log(res)
+            })
+            .catch( error => {
+                // TODO: handle error
+            })
     }
 
     render() {
@@ -330,27 +449,31 @@ class ImgEditor extends React.Component {
                     <img ref="image" src={this.state.image} className="d-none" />
                 </div>
                 <div className="row m-0">
-                    { this.state.rectangles.map(rec => {
+                    { this.state.rectangles.map((rec, index) => {
                         return <div key={rec.id} className="col-md-3">
-                                    <form>
+                                    <form className="field-form">
+                                        {this.state.loadingFieldIndex >= 0 && this.state.loadingFieldIndex == index && <div className="loading">
+                                            <div class="spinner-border text-secondary" role="status">
+                                                <span class="sr-only">Loading...</span>
+                                            </div>
+                                        </div>} 
                                         <div className="form-group">
                                             <h4>Aria #{rec.id}</h4>
                                             <label>Label (required)</label>
-                                            <input type="text" onChange={this.handleInput} className="form-control" data-id={`${rec.id}`} data-type="label" placeholder="Field 1"></input>
+                                            <input type="text" onChange={this.handleInput} onFocus={this.handleFocus} onBlur={this.saveInput} value={rec.name} className="form-control" data-id={`${rec.id}`} data-type="name" placeholder="Field 1"></input>
                                             <label>JSON name (required)</label>
-                                            <input type="text" onChange={this.handleInput} className="form-control" data-id={`${rec.id}`} data-type="jsonName" placeholder="json_name"></input>
-                                            <label>Side (optional)</label>
+                                            <input type="text" onChange={this.handleInput} onFocus={this.handleFocus} onBlur={this.saveInput} value={rec.json_name} className="form-control" data-id={`${rec.id}`} data-type="json_name" placeholder="json_name"></input>
+                                            <label>Side</label>
                                             <div className="input-group mb-3">
-                                                <select className="custom-select" id="inputGroupSelect04">
-                                                    <option selected>Select...</option>
-                                                    <option value="right">right</option>
-                                                    <option value="left">left</option>
-                                                    <option value="top">top</option>
-                                                    <option value="bottom">bottom</option>
+                                                <select defaultValue={rec.side} onChange={this.handleInput} onFocus={this.handleFocus} onBlur={this.saveInput} className="custom-select" data-id={`${rec.id}`} data-type="side">
+                                                    <option value="RIGHT">right</option>
+                                                    <option value="LEFT">left</option>
+                                                    <option value="TOP">top</option>
+                                                    <option value="BOTTOM">bottom</option>
                                                 </select>
                                             </div>
-                                            <label>Regex (optional)</label>
-                                            <input type="text" onChange={this.handleInput} className="form-control" data-id={`${rec.id}`} data-type="regex" placeholder="%^abc%"></input>
+                                            <label>Regexp (optional)</label>
+                                            <input type="text" onChange={this.handleInput} onFocus={this.handleFocus} onBlur={this.saveInput}  value={rec.regexp} className="form-control" data-id={`${rec.id}`} data-type="regexp" placeholder="%^abc%"></input>
                                             <small className="form-text text-muted">Regular expression for the data</small>
                                         </div>
                                     </form>
@@ -364,9 +487,6 @@ class ImgEditor extends React.Component {
                                 {this.state.error}
                             </div>
                         }
-                        <div className="col-md-2 text-center offset-md-5 mb-4 mt-2">
-                            <button type="button" className="btn customBtn" onClick={this.handleSubmit}>Save</button>
-                        </div>
                     </div>
                 }
             </div>
