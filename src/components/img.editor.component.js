@@ -453,8 +453,8 @@ class ImgEditor extends React.Component {
                         return <div key={rec.id} className="col-md-3">
                                     <form className="field-form">
                                         {this.state.loadingFieldIndex >= 0 && this.state.loadingFieldIndex == index && <div className="loading">
-                                            <div class="spinner-border text-secondary" role="status">
-                                                <span class="sr-only">Loading...</span>
+                                            <div className="spinner-border text-secondary" role="status">
+                                                <span className="sr-only">Loading...</span>
                                             </div>
                                         </div>} 
                                         <div className="form-group">
