@@ -165,11 +165,24 @@ const Register = () => {
 
                 const { data } =  error.response
 
-                if( data.username[0] ){
+                console.log(data)
+
+                if("username" in data){
                     setRegisterError(data.username[0])
-                } else{
+                }
+                else{
                     setRegisterError(data.password[0])
                 }
+
+                // if( data.username[0] ){
+
+                //     setRegisterError(data.username[0])
+
+                // } else{
+
+                //     setRegisterError(data.password[0])
+
+                // }
 
             })
 

@@ -15,6 +15,7 @@ class CreateNewProject extends React.Component {
             image_file: null,
             lang: 'eng',
             error: '',
+            uploadError: null,
         }
 
         bindMethods(this, ['handleInput', 'handleImage', 'handleSubmit'])
@@ -63,10 +64,14 @@ class CreateNewProject extends React.Component {
                 })
                 .catch( error => {
                     // TODO: handle error
-                    // this.setState(prev => ({
-                    //     ...prev,
-                    //     error: error.response.data
-                    // }))
+                    console.log(error.response)
+
+                    const { data } = error.response
+
+                    this.setState(prev => ({
+                        ...prev,
+                        uploadError: data
+                    }))
                 })
         }
     }
@@ -138,6 +143,18 @@ class CreateNewProject extends React.Component {
                                         {this.state.error && <span className="badge badge-danger p-2">{this.state.error}</span>}
                                     </div>
                                 </div>
+
+                                {
+                                    this.state.uploadError ? (
+                                        <div className="form-group">
+                                            <p>{this.state.uploadError.image_file[0]}</p>
+                                        </div>
+                                    ) : null
+                                }
+
+
+
+
                             </form>
                         </div>
                     </div>
