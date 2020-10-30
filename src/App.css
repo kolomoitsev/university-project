@@ -488,3 +488,14 @@ input.Area:focus span{
 .loading > .spinner-border {
     margin-top: 160px;
 }
+.loadingSpinner{
+    display: flex;
+    position: relative;
+    width: 100%;
+    height: 150px;
+    align-items: center;
+    justify-content: center;
+}
+.loadingSpinner i{
+    font-size: 35px;
+}

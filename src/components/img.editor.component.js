@@ -8,6 +8,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 const token = localStorage.getItem('token')
 
 class ImgEditor extends React.Component {
+
     constructor(props) {
         super(props);
 
@@ -36,7 +37,9 @@ class ImgEditor extends React.Component {
             description: '',
             image: '',
             imageName: '',
-            loadingFieldIndex: -1
+            loadingFieldIndex: -1,
+            checkName: '',
+            checkDescription: '',
         };
 
     }
@@ -64,6 +67,8 @@ class ImgEditor extends React.Component {
                     lang,
                     image: `http://127.0.0.1:8000${image}`,
                     imageName,
+                    checkName: name,
+                    checkDescription: description,
                     rectangles: documentfield_set
                 }))
 
@@ -397,6 +402,40 @@ class ImgEditor extends React.Component {
             })
     }
 
+    updateRecord = () => {
+        const id = window.location.pathname.split('/')[2]
+
+        const item = new FormData();
+
+        item.append(`name`, this.state.name);
+        item.append(`description`, this.state.description);
+
+        console.log(`${process.env.REACT_APP_API_SERVER}/structures/${id}`)
+
+        axios.patch(`${process.env.REACT_APP_API_SERVER}/structures/${id}/`, item , {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+                'Authorization': `Bearer ${token}`
+            }
+        })
+            .then(res => console.log(res))
+            .catch(err => console.log(err.response))
+    }
+
+    changeName = value => {
+        this.setState(prev => ({
+            ...prev,
+            name: value,
+        }))
+    }
+
+    changeDescription = value => {
+        this.setState(prev => ({
+            ...prev,
+            description: value,
+        }))
+    }
+
     render() {
         return (
             <div>
@@ -405,11 +444,12 @@ class ImgEditor extends React.Component {
                         <div className="col-md-6 mx-auto">
                             <div className="form-group ">
                                 <label htmlFor="inputTitle">Template name</label>
-                                <input type="text" value={this.state.name} className="form-control" id="inputTitle"/>
+                                <input type="text" onChange={ event => this.changeName(event.target.value)} defaultValue={this.state.name} className="form-control" id="inputTitle"/>
                             </div>
+
                             <div className="form-group">
                                 <label htmlFor="inputDescription">Template description</label>
-                                <textarea value={this.state.description} className="form-control" id="inputDescription" rows="3"></textarea>
+                                <textarea onChange={ event => this.changeDescription(event.target.value) } defaultValue={this.state.description} className="form-control" id="inputDescription" rows="3"></textarea>
                             </div>
 
                             <div className="form-group">
@@ -428,9 +468,18 @@ class ImgEditor extends React.Component {
                                 <input type="text" disabled={true} value={this.state.imageName} className="form-control" id="documentName"/>
                             </div>
 
-                            <div className="form-group text-right">
-                                <button type="button" className="btn customBtn">Save</button>
-                            </div>
+                            {
+                                (this.state.name === this.state.checkName && this.state.description === this.state.checkDescription)
+                                    ?
+                                        <div className="form-group text-right">
+                                            <button type="button" disabled onClick={ this.updateRecord } className="btn disabled customBtn">Save</button>
+                                        </div>
+                                    :   <div className="form-group text-right">
+                                            <button type="button" onClick={ this.updateRecord } className="btn customBtn">Save</button>
+                                        </div>
+                            }
+
+
                         </div>
 
                         <div className="col-12">
