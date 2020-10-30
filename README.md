@@ -2,7 +2,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ## Available Scripts
 
-### `cp src/.env.example src/.env`
+### `cp .env.example .env`
 
 In the project directory, you can run:
 
