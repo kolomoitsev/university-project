@@ -53,24 +53,22 @@ const Auth = () => {
 
             /* checking for password > 6 digits  */
 
-            //TODO: don't forget to delete comments of password validation
-            setIsPassword(true)
-            // if (password.length === 0) {
-            //     $(passwordRef.current).css({
-            //         borderBottom: `3px solid grey`,
-            //     });
-            //     setIsPassword(false)
-            // } else if (password.length > 6) {
-            //     $(passwordRef.current).css({
-            //         borderBottom: `3px solid green`,
-            //     });
-            //     setIsPassword(true)
-            // } else {
-            //     $(passwordRef.current).css({
-            //         borderBottom: `3px solid red`,
-            //     });
-            //     setIsPassword(false)
-            // }
+            if (password.length === 0) {
+                $(passwordRef.current).css({
+                    borderBottom: `3px solid grey`,
+                });
+                setIsPassword(false)
+            } else if (password.length > 6) {
+                $(passwordRef.current).css({
+                    borderBottom: `3px solid green`,
+                });
+                setIsPassword(true)
+            } else {
+                $(passwordRef.current).css({
+                    borderBottom: `3px solid red`,
+                });
+                setIsPassword(false)
+            }
 
         };
 

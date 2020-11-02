@@ -60,30 +60,28 @@ class HomePage extends React.Component {
         return (
             <>
                 <Header/>
+                <div className="main">
+                    {this.checkLoading()}
+                    {
+                        (
+                            this.state.templates.length ?
+                                <div className="container mt-3">
 
-                {this.checkLoading()}
-
-                {
-                    (
-                        this.state.templates.length ?
-                            <div className="container mt-3">
-
-                                <h2 className="mb-3 font-weight-bold ">Last templates</h2>
+                                    <h2 className="mb-3 font-weight-bold ">Last templates</h2>
 
 
-                                <div className="row">
-                                    {this.state.templates.map(item => <ProjectBlock key={item.id} data={item}/>)}
+                                    <div className="row">
+                                        {this.state.templates.map(item => <ProjectBlock key={item.id} data={item}/>)}
+                                    </div>
+
                                 </div>
+                                : null
+                        )
+                    }
 
-                            </div>
-                            : null
-                    )
-                }
-
-                <CreateNewProject/>
-
+                    <CreateNewProject/>
+                </div>
                 <Footer/>
-
             </>
         )
     }
