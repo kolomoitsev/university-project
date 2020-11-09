@@ -499,3 +499,14 @@ input.Area:focus span{
 .loadingSpinner i{
     font-size: 35px;
 }
+
+.delete-icon {
+    position: absolute;
+    top: 6px;
+    right: 0;
+    color: #dc3545;
+}
+
+.delete-icon:hover {
+    color: #b8202f;
+}
