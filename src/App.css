@@ -389,7 +389,7 @@ input.Area:focus span{
     display: block;
     position: relative;
     width: 100%;
-    
+
 }
 
 .projectBlockItem a{
@@ -510,3 +510,24 @@ input.Area:focus span{
 .delete-icon:hover {
     color: #b8202f;
 }
+
+.deleteItemBtn span{
+    display: block;
+    position: absolute;
+    z-index: 99999;
+    right: 10px;
+    top: 10px;
+}
+
+.deleteItemBtn span > i{
+    color: #b8202f;
+    transition: .1s all ease-in-out;
+    cursor: pointer;
+    font-size: 25px;
+}
+
+.deleteItemBtn span > i:hover{
+    color: royalblue;
+}
+
+

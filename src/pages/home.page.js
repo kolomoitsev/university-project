@@ -17,6 +17,9 @@ class HomePage extends React.Component {
             token: '',
             loading: false,
         }
+
+        this.deleteTemplate = this.deleteTemplate.bind(this)
+
     }
 
     componentDidMount() {
@@ -55,6 +58,16 @@ class HomePage extends React.Component {
             null
     }
 
+    deleteTemplate = (id) => {
+        const index = this.state.templates.findIndex(item => item.id === id)
+        const templates = this.state.templates
+        templates.splice(index, 1)
+        this.setState(prev => ({
+            ...prev,
+            templates
+        }))
+        //this.forceUpdate()
+    }
 
     render() {
         return (
@@ -71,7 +84,7 @@ class HomePage extends React.Component {
 
 
                                     <div className="row">
-                                        {this.state.templates.map(item => <ProjectBlock key={item.id} data={item}/>)}
+                                        {this.state.templates.map(item => <ProjectBlock deleteFunc={ this.deleteTemplate } key={item.id} data={item}/>)}
                                     </div>
 
                                 </div>
