@@ -4,6 +4,8 @@ import TestImg from '../assets/img/test_img.png'
 
 import '../App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { bindMethods } from '../utils/bindMethods'
+
 
 const token = localStorage.getItem('token')
 
@@ -39,9 +41,10 @@ class ImgEditor extends React.Component {
             imageName: '',
             loadingFieldIndex: -1,
             checkName: '',
-            checkDescription: '',
+            checkDescription: ''
         };
 
+        bindMethods(this, ['handleDeleteField'])
     }
 
     componentDidMount() {
@@ -136,37 +139,29 @@ class ImgEditor extends React.Component {
 
             this.addField({
                 name: `Label ${this.state.rectangles.length + 1}`,
-                json_name: `label_${this.state.rectangles.length + 1}`,
+                json_name: `label_${Math.floor(Date.now() / 1000)}`,
                 side: 'RIGHT',
                 min_x,
                 min_y,
                 max_x,
                 max_y,
                 structure: this.state.id
+            }).then(res => {
+                let rectangles = this.state.rectangles
+                const newRectangle = res.data
+
+                rectangles.push(newRectangle)    
+                this.setState((state) => ({
+                    ...state,
+                    x: null,
+                    y: null,
+                    tmpX: null,
+                    tmpY: null,
+                    isDrawing: !state.isDrawing,
+                    rectangles
+                }))
             })
 
-            let rectangles = this.state.rectangles
-            rectangles.push({
-                id,
-                min_x,
-                min_y,
-                max_x,
-                max_y,
-                name: '',
-                regexp: '',
-                json_name: '',
-                side: ''
-            })
-
-            this.setState((state) => ({
-                ...state,
-                x: null,
-                y: null,
-                tmpX: null,
-                tmpY: null,
-                isDrawing: !state.isDrawing,
-                rectangles
-            }))
         } else {            
             let x = event.pageX - this.state.XzoomCoefficient, y = event.pageY - this.state.YzoomCoefficient;
         
@@ -182,9 +177,7 @@ class ImgEditor extends React.Component {
         }
     }
 
-    drawRectangle(x, y, width, height, text) {
-        console.log('DRAWING RECTANGLE')
-
+    clearRectangle(x, y, width, height) {
         // Clear aria before
         this.state.ctx.clearRect(
             x,
@@ -192,6 +185,12 @@ class ImgEditor extends React.Component {
             width,
             height
         );
+    }
+
+    drawRectangle(x, y, width, height, text) {
+        console.log('DRAWING RECTANGLE')
+
+        this.clearRectangle(x, y, width, height)
 
         const border = this.state.ctxBorder
         this.state.ctx.fillRect(x, y, width, height);
@@ -395,7 +394,7 @@ class ImgEditor extends React.Component {
     }
 
     addField(data) {
-        axios({
+        return axios({
             method: 'post',
             url: `${process.env.REACT_APP_API_SERVER}/fields/`,
             data: data,
@@ -404,12 +403,49 @@ class ImgEditor extends React.Component {
                 'Authorization': `Bearer ${token}`
             }
             })
-            .then( res => {
-                console.log(res)
-            })
-            .catch( error => {
-                // TODO: handle error
-            })
+    }
+
+    deleteField(id) {
+        return axios({
+                    method: 'delete',
+                    url: `${process.env.REACT_APP_API_SERVER}/fields/${id}`,
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    }
+                    })
+                    .then( res => {
+                        console.log(res)
+                    })
+                    .catch( error => {
+                        // TODO: handle error
+                    })
+    }
+
+    handleDeleteField(event) {
+        console.log('deleting')
+        event.preventDefault()
+
+        const id  = event.target.dataset.id
+        const rectangles = this.state.rectangles
+        const field = rectangles.find(item => item.id == id)
+        
+        const x = Math.round(field.min_x / this.state.coef) - 1
+        const y = Math.round(field.min_y / this.state.coef) - 1
+        const width = Math.round((field.max_x - field.min_x) / this.state.coef) + 3
+        const height = Math.round((field.max_y - field.min_y) / this.state.coef) + 3
+
+
+        this.deleteField(id).then(() => {
+            const index = rectangles.findIndex(item => item.id == id)
+            rectangles[index].hidden = true
+            //rectangles.splice(index, 1)
+            this.clearRectangle(x, y, width, height)
+            this.setState((prev) => ({
+                ...prev,
+                rectangles
+            }))
+        })
     }
 
     updateRecord = () => {
@@ -509,7 +545,7 @@ class ImgEditor extends React.Component {
                 </div>
                 <div className="row m-0">
                     { this.state.rectangles.map((rec, index) => {
-                        return <div key={rec.id} className="col-md-3">
+                        return <div key={rec.id} className={rec.hidden ? 'd-none' : 'col-md-3'}>
                                     <form className="field-form">
                                         {this.state.loadingFieldIndex >= 0 && this.state.loadingFieldIndex == index && <div className="loading">
                                             <div className="spinner-border text-secondary" role="status">
@@ -517,7 +553,7 @@ class ImgEditor extends React.Component {
                                             </div>
                                         </div>} 
                                         <div className="form-group">
-                                            <h4>Aria #{rec.id}</h4>
+                                            <h4>Aria #{index + 1} <a href="#" className="delete-icon" onClick={this.handleDeleteField}><i data-id={`${rec.id}`} className='bx bxs-trash'></i></a></h4>
                                             <label>Label (required)</label>
                                             <input type="text" onChange={this.handleInput} onFocus={this.handleFocus} onBlur={this.saveInput} value={rec.name} className="form-control" data-id={`${rec.id}`} data-type="name" placeholder="Field 1"></input>
                                             <label>JSON name (required)</label>
