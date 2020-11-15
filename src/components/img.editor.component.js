@@ -44,7 +44,7 @@ class ImgEditor extends React.Component {
             checkDescription: ''
         };
 
-        bindMethods(this, ['handleDeleteField'])
+        bindMethods(this, ['handleDeleteField', 'initializeCanvas'])
     }
 
     componentDidMount() {
@@ -104,7 +104,8 @@ class ImgEditor extends React.Component {
             let heightOffset = this.getOffset(canvasWrapper)
     
             ctx.font = "30px Arial";
-            ctx.fillStyle = this.state.ctxBorderColor
+
+            ctx.fillStyle = this.props.borderColor
     
             img.onload = () => {
                 let coef = img.width / windowWidth
@@ -118,8 +119,9 @@ class ImgEditor extends React.Component {
                     ctxWidth: windowWidth,
                     ctxHeight,
                     YzoomCoefficient: heightOffset
-                }))
-                resolve(true)
+                }), () => {
+                    resolve(true)
+                })
             }
         })
     }
@@ -193,10 +195,18 @@ class ImgEditor extends React.Component {
         this.clearRectangle(x, y, width, height)
 
         const border = this.state.ctxBorder
+        
+        let ctx = this.state.ctx
+        ctx.fillStyle = this.state.ctxBorderColor
+
+        this.setState((state) => ({
+            ...state,
+            ctx
+        }))
+
         this.state.ctx.fillRect(x, y, width, height);
         this.state.ctx.clearRect(x + border, y + border, width - (border * 2), height - (border * 2));
         
-        let ctx = this.state.ctx
         ctx.globalAlpha = 0.2;
         ctx.fillStyle = this.state.ctxBackColor
         this.setState((state) => ({
