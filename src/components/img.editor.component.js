@@ -72,43 +72,53 @@ class ImgEditor extends React.Component {
                     rectangles: documentfield_set
                 }))
 
-                this.initializeCanvas()
-
-                setTimeout(() => {
+                this.initializeCanvas().then(() => {
                     this.state.rectangles.forEach((rec, index) => {
                         let min_x = rec.min_x / this.state.coef
                         let min_y = rec.min_y / this.state.coef
                         let { width, height } = this.calcWidthAndHeight(min_x, rec.max_x / this.state.coef, min_y, rec.max_y / this.state.coef)
                         this.drawRectangle(min_x, min_y, width, height, index + 1)
                     })
-                }, 1000)
+                })
+
+                // setTimeout(() => {
+                //     this.state.rectangles.forEach((rec, index) => {
+                //         let min_x = rec.min_x / this.state.coef
+                //         let min_y = rec.min_y / this.state.coef
+                //         let { width, height } = this.calcWidthAndHeight(min_x, rec.max_x / this.state.coef, min_y, rec.max_y / this.state.coef)
+                //         this.drawRectangle(min_x, min_y, width, height, index + 1)
+                //     })
+                // }, 1000)
             })
     }
 
     initializeCanvas = () => {
-        let ctx = this.refs.canvas.getContext('2d')
-        const img = this.refs.image
-        const canvasWrapper = this.refs.canvasWrapper
-        let windowWidth = window.innerWidth
-        let heightOffset = this.getOffset(canvasWrapper)
-
-        ctx.font = "30px Arial";
-        ctx.fillStyle = this.state.ctxBorderColor
-
-        img.onload = () => {
-            let coef = img.width / windowWidth
-            let ctxHeight = img.height / coef
-
-            this.setState((state) => ({
-                ...state,
-                ctx,
-                img,
-                coef,
-                ctxWidth: windowWidth,
-                ctxHeight,
-                YzoomCoefficient: heightOffset
-            }))
-        }
+        return new Promise((resolve, _) => {
+            let ctx = this.refs.canvas.getContext('2d')
+            const img = this.refs.image
+            const canvasWrapper = this.refs.canvasWrapper
+            let windowWidth = window.innerWidth
+            let heightOffset = this.getOffset(canvasWrapper)
+    
+            ctx.font = "30px Arial";
+            ctx.fillStyle = this.state.ctxBorderColor
+    
+            img.onload = () => {
+                let coef = img.width / windowWidth
+                let ctxHeight = img.height / coef
+    
+                this.setState((state) => ({
+                    ...state,
+                    ctx,
+                    img,
+                    coef,
+                    ctxWidth: windowWidth,
+                    ctxHeight,
+                    YzoomCoefficient: heightOffset
+                }))
+                resolve(true)
+            }
+        })
     }
 
     setPoint = (event) => {
