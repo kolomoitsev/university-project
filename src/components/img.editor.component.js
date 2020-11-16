@@ -159,8 +159,15 @@ class ImgEditor extends React.Component {
                     y: null,
                     tmpX: null,
                     tmpY: null,
-                    isDrawing: !state.isDrawing,
                     rectangles
+                }))
+            }).catch(err => {
+                this.clearRectangle(this.state.x, this.state.y, width + 3, height + 3)
+                console.log("ERROR - ", err.response.data.detail)
+            }).finally(() => {
+                this.setState((state) => ({
+                    ...state,
+                    isDrawing: !state.isDrawing
                 }))
             })
 
@@ -574,7 +581,8 @@ class ImgEditor extends React.Component {
                                                     <option value="RIGHT">right</option>
                                                     <option value="LEFT">left</option>
                                                     <option value="TOP">top</option>
-                                                    <option value="BOTTOM">bottom</option>
+                                                    <option value="DOWN">bottom</option>
+                                                    <option value="RIGHT-BOTTOM">right-bottom</option>
                                                 </select>
                                             </div>
                                             <label>Regexp (optional)</label>
