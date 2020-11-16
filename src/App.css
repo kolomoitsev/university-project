@@ -531,3 +531,32 @@ input.Area:focus span{
 }
 
 
+.showDrawingErrorWrapper{
+    display: flex;
+    position: fixed;
+    z-index: 9999;
+    width: 40%;
+    margin: 0 30%;
+    height: 200px;
+    border-radius: 8px;
+    background-color: rgba(255, 255, 255, .7);
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+}
+
+.showDrawingErrorWrapper i{
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    color: #000;
+    font-size: 30px;
+    cursor: pointer;
+}
+.showDrawingInside h4{
+    font-size: 30px;
+    font-weight: 600;
+}
+.showDrawingInside p{
+    font-size: 15px;
+}

@@ -41,7 +41,8 @@ class ImgEditor extends React.Component {
             imageName: '',
             loadingFieldIndex: -1,
             checkName: '',
-            checkDescription: ''
+            checkDescription: '',
+            drawingError: null,
         };
 
         bindMethods(this, ['handleDeleteField', 'initializeCanvas'])
@@ -102,15 +103,15 @@ class ImgEditor extends React.Component {
             const canvasWrapper = this.refs.canvasWrapper
             let windowWidth = window.innerWidth
             let heightOffset = this.getOffset(canvasWrapper)
-    
+
             ctx.font = "30px Arial";
 
             ctx.fillStyle = this.props.borderColor
-    
+
             img.onload = () => {
                 let coef = img.width / windowWidth
                 let ctxHeight = img.height / coef
-    
+
                 this.setState((state) => ({
                     ...state,
                     ctx,
@@ -152,7 +153,7 @@ class ImgEditor extends React.Component {
                 let rectangles = this.state.rectangles
                 const newRectangle = res.data
 
-                rectangles.push(newRectangle)    
+                rectangles.push(newRectangle)
                 this.setState((state) => ({
                     ...state,
                     x: null,
@@ -162,8 +163,16 @@ class ImgEditor extends React.Component {
                     rectangles
                 }))
             }).catch(err => {
+
                 this.clearRectangle(this.state.x, this.state.y, width + 3, height + 3)
+
+                this.setState(state => ({
+                    ...state,
+                    drawingError: err.response.data.detail
+                }))
+
                 console.log("ERROR - ", err.response.data.detail)
+
             }).finally(() => {
                 this.setState((state) => ({
                     ...state,
@@ -171,9 +180,9 @@ class ImgEditor extends React.Component {
                 }))
             })
 
-        } else {            
+        } else {
             let x = event.pageX - this.state.XzoomCoefficient, y = event.pageY - this.state.YzoomCoefficient;
-        
+
             this.setState((state) => ({
                 ...state,
                 x,
@@ -202,7 +211,7 @@ class ImgEditor extends React.Component {
         this.clearRectangle(x, y, width, height)
 
         const border = this.state.ctxBorder
-        
+
         let ctx = this.state.ctx
         ctx.fillStyle = this.state.ctxBorderColor
 
@@ -213,7 +222,7 @@ class ImgEditor extends React.Component {
 
         this.state.ctx.fillRect(x, y, width, height);
         this.state.ctx.clearRect(x + border, y + border, width - (border * 2), height - (border * 2));
-        
+
         ctx.globalAlpha = 0.2;
         ctx.fillStyle = this.state.ctxBackColor
         this.setState((state) => ({
@@ -247,7 +256,7 @@ class ImgEditor extends React.Component {
             return
         }
         let tmpX = event.pageX - this.state.XzoomCoefficient, tmpY = event.pageY - this.state.YzoomCoefficient
-        
+
         if (this.state.tmpX && this.state.tmpY) {
             let { width, height } = this.calcWidthAndHeight(this.state.x, this.state.tmpX, this.state.y, this.state.tmpY)
 
@@ -264,7 +273,7 @@ class ImgEditor extends React.Component {
             tmpX,
             tmpY
         }))
-        
+
         this.drawBorder(this.state.x, this.state.y, tmpX, tmpY)
     }
 
@@ -379,7 +388,7 @@ class ImgEditor extends React.Component {
                 .finally(() => {
                     const rectangles = this.state.rectangles
                     rectangles[recIndex] = updatedRectangle
-    
+
                     this.setState((state) => ({
                         ...state,
                         rectangles,
@@ -399,7 +408,7 @@ class ImgEditor extends React.Component {
 
     handleSubmit = () => {
         const isValid = this.validateInputs()
-        
+
         if (isValid) {
 
         } else {
@@ -446,7 +455,7 @@ class ImgEditor extends React.Component {
         const id  = event.target.dataset.id
         const rectangles = this.state.rectangles
         const field = rectangles.find(item => item.id == id)
-        
+
         const x = Math.round(field.min_x / this.state.coef) - 1
         const y = Math.round(field.min_y / this.state.coef) - 1
         const width = Math.round((field.max_x - field.min_x) / this.state.coef) + 3
@@ -502,6 +511,16 @@ class ImgEditor extends React.Component {
     render() {
         return (
             <div>
+                {
+                    this.state.drawingError && <div className="showDrawingErrorWrapper">
+                        <div className="showDrawingInside">
+                            <i onClick={ () =>  { this.setState(state => ({ ...state, drawingError: null})) } } className='bx bxs-x-circle'> </i>
+                            <h4>Error</h4>
+                            <p>{ this.state.drawingError }</p>
+                        </div>
+                    </div>
+                }
+
                 <div className="container">
                     <div className="row">
                         <div className="col-md-6 mx-auto">
@@ -523,7 +542,7 @@ class ImgEditor extends React.Component {
                                         <option value="rus">rus</option>
                                         <option value="de">de</option>
                                     </select>
-                                </div>  
+                                </div>
                             </div>
 
                             <div className="form-group">
@@ -568,7 +587,7 @@ class ImgEditor extends React.Component {
                                             <div className="spinner-border text-secondary" role="status">
                                                 <span className="sr-only">Loading...</span>
                                             </div>
-                                        </div>} 
+                                        </div>}
                                         <div className="form-group">
                                             <h4>Aria #{index + 1} <a href="#" className="delete-icon" onClick={this.handleDeleteField}><i data-id={`${rec.id}`} className='bx bxs-trash'></i></a></h4>
                                             <label>Label (required)</label>
@@ -593,7 +612,7 @@ class ImgEditor extends React.Component {
                                 </div>
                     }) }
                 </div>
-                { this.state.rectangles.length > 0 && 
+                { this.state.rectangles.length > 0 &&
                     <div className="row m-0">
                         { this.state.error &&
                             <div className="alert alert-danger text-center col-10 offset-1 mb-2 mt-2" role="alert">
