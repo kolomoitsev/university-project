@@ -1,8 +1,15 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
+
+import axios from 'axios'
+
+import uuid from 'react-uuid'
 
 import {Header, Footer} from "../components/componets";
 
 import '../App.css';
+
+const token = localStorage.getItem('token')
+
 
 const ParsePage = () => {
 
@@ -37,38 +44,110 @@ const ParsePage = () => {
       },
     ]
 
-    return (<div>
-            <Header/>
+    const [templates, setTemplates] = useState(null)
+    const [uploadedImg, setUploadedImg] = useState(null)
+    const [selectedTemplate, setSelectedTemplate] = useState(null)
+
+    const [checkData, setCheckData] = useState(false)
+
+    useEffect( () => {
+
+      const getUserTemplates = async () => {
+
+        const { data : { results } } = await axios.get(`${process.env.REACT_APP_API_SERVER}/structures/` , {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            'Authorization': `Bearer ${token}`
+          }
+        })
+
+        //results && console.log(results)
+        results && setTemplates(results)
+
+      }
+
+      getUserTemplates()
+
+    }, [])
+
+    useEffect(() => {
+
+      if(templates !== null && selectedTemplate !== null) setCheckData(true)
+
+    })
+
+    const handleParse = async (event) => {
+
+      event.preventDefault()
+
+      const form = new FormData()
+
+      await form.append('image', uploadedImg)
+
+      //console.log(selectedTemplate)
+
+      await axios.post(`http://localhost:8001/api/v0/ocr/${selectedTemplate}/`, form, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          'Authorization': `Bearer ${token}`
+        }
+      })
+          .then(res => console.log(res))
+          .catch(err => console.log(err))
+
+    }
+
+    // uploadedImg && console.log(uploadedImg)
+    // selectedTemplate && console.log(selectedTemplate)
+
+    //
+
+    return (
+        <div>
+
+          <Header/>
 
             <div className="container mt-3 main">
 
                 <h2 className="mb-3 font-weight-bold ">Parse document</h2>
                 <div className="row parse-block">
                   <div className="col-md-3">
-                    <div class="input-group mb-3">
-                      <div class="custom-file">
-                        <input type="file" class="custom-file-input" id="inputGroupFile01" />
-                        <label className="custom-file-label" for="inputGroupFile01">Choose file</label>
+                    <div className="input-group mb-3">
+                      <div className="custom-file">
+                        <input onChange={event => setUploadedImg(event.target.files[0])} type="file" className="custom-file-input" id="inputGroupFile01" />
+                        <label className="custom-file-label" htmlFor={"inputGroupFile01"}>Choose file</label>
                       </div>
                     </div>
-                    <div class="input-group">
-                      <select class="custom-select" id="inputGroupSelect04">
-                        <option selected>Choose template</option>
-                        <option value="1">Template 1</option>
-                        <option value="2">Template 2</option>
-                        <option value="3">Template 3</option>
-                      </select>
-                      <div class="input-group-append">
-                        <button class="btn btn-outline-secondary" type="button">Parse</button>
+
+                    {
+                      templates && <div className="input-group">
+
+                        <select onChange={event => setSelectedTemplate(event.target.value)} className="custom-select" id="inputGroupSelect04">
+
+                          <option defaultValue={"Choose template"}>Choose template</option>
+
+                          { templates.map(temp => <option key={temp.id} value={temp.id}>{temp.name}</option> ) }
+
+                        </select>
+
+                        {
+                          checkData && <div className="input-group-append">
+                            <button onClick={ handleParse } className="btn btn-outline-secondary" type="button">Parse</button>
+                          </div>
+                        }
+
                       </div>
-                    </div>
+
+                    }
+
+
                   </div>
                   <div className="col-md-2 text-center">
-                    <i class='bx bx-right-arrow-circle bx-flip-vertical' ></i>
+                    <i className='bx bx-right-arrow-circle bx-flip-vertical' > </i>
                     <button className="btn customBtn mt-3">Save JSON</button>
                   </div>
                   <div className="col-md-7 text-center">
-                    <table class="table table-striped table-bordered">
+                    <table className="table table-striped table-bordered">
                       <thead>
                         <tr>
                           <th scope="col">Field name</th>
@@ -76,11 +155,11 @@ const ParsePage = () => {
                         </tr>
                       </thead>
                       <tbody>
-                        { data && data.map(item => 
-                          <tr>
-                            <td>{item.name}</td>
-                            <td>{item.value}</td>
-                          </tr> 
+                        { data && data.map(item =>
+                          <tr key={ uuid() }>
+                            <td>{ item.name }</td>
+                            <td>{ item.value }</td>
+                          </tr>
                           )
                         }
 
