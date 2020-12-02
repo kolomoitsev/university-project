@@ -6,6 +6,8 @@ import uuid from 'react-uuid'
 
 import {Header, Footer} from "../components/componets";
 
+import { CSVLink, CSVDownload } from "react-csv";
+
 import '../App.css';
 
 const token = localStorage.getItem('token')
@@ -47,8 +49,11 @@ const ParsePage = () => {
     const [templates, setTemplates] = useState(null)
     const [uploadedImg, setUploadedImg] = useState(null)
     const [selectedTemplate, setSelectedTemplate] = useState(null)
-
     const [checkData, setCheckData] = useState(false)
+    const [parsedData, setParsedData] = useState(null)
+    const [csvData, setCsvData] = useState(null)
+
+    const [errorRes, setErrorRes] = useState(null)
 
     useEffect( () => {
 
@@ -76,15 +81,30 @@ const ParsePage = () => {
 
     })
 
+    useEffect( () => {
+        const getCsvData = async () => {
+
+            let data = []
+
+            if(await csvData && parsedData.length) data.push([[`name`, `json_name`, `test`]])
+
+            parsedData && parsedData.map(pItem => {
+                data.push([pItem.name, pItem.json_name, pItem.text],)
+            })
+
+            await setCsvData(data)
+
+        }
+        getCsvData()
+    }, [parsedData])
+
     const handleParse = async (event) => {
 
       event.preventDefault()
 
       const form = new FormData()
 
-      await form.append('image', uploadedImg)
-
-      //console.log(selectedTemplate)
+      uploadedImg &&  form.append('image', uploadedImg)
 
       await axios.post(`http://localhost:8001/api/v0/ocr/${selectedTemplate}/`, form, {
         headers: {
@@ -92,18 +112,26 @@ const ParsePage = () => {
           'Authorization': `Bearer ${token}`
         }
       })
-          .then(res => console.log(res))
-          .catch(err => console.log(err))
+          .then(res => {
+              setParsedData(res.data)
+          })
+          .catch(err => setErrorRes(err.response.data.detail))
 
     }
 
-    // uploadedImg && console.log(uploadedImg)
-    // selectedTemplate && console.log(selectedTemplate)
-
-    //
 
     return (
         <div>
+
+            {
+                errorRes && <div className="errorForm">
+                    <div className="formInside">
+                        <i onClick={ () => setErrorRes(null)} className='bx bx-x'> </i>
+                        <h3>Error</h3>
+                        <p>{errorRes}</p>
+                    </div>
+                </div>
+            }
 
           <Header/>
 
@@ -117,6 +145,7 @@ const ParsePage = () => {
                         <input onChange={event => setUploadedImg(event.target.files[0])} type="file" className="custom-file-input" id="inputGroupFile01" />
                         <label className="custom-file-label" htmlFor={"inputGroupFile01"}>Choose file</label>
                       </div>
+
                     </div>
 
                     {
@@ -140,32 +169,38 @@ const ParsePage = () => {
 
                     }
 
-
                   </div>
                   <div className="col-md-2 text-center">
                     <i className='bx bx-right-arrow-circle bx-flip-vertical' > </i>
-                    <button className="btn customBtn mt-3">Save JSON</button>
+
+                      { parsedData && <CSVLink className="btn customBtn" data={csvData}>Download CSV File</CSVLink> }
+                      { parsedData && <a className="btn confirmBtn" href={`data: ${JSON.stringify(parsedData)} `} download={"data.json"}>Download JSON</a> }
+
                   </div>
-                  <div className="col-md-7 text-center">
-                    <table className="table table-striped table-bordered">
-                      <thead>
+                  {
+                    parsedData && <div className="col-md-7 text-center">
+                      <table className="table table-striped table-bordered">
+                        <thead>
                         <tr>
                           <th scope="col">Field name</th>
+                          <th scope="col">Json name</th>
                           <th scope="col">Value</th>
                         </tr>
-                      </thead>
-                      <tbody>
-                        { data && data.map(item =>
-                          <tr key={ uuid() }>
-                            <td>{ item.name }</td>
-                            <td>{ item.value }</td>
-                          </tr>
-                          )
+                        </thead>
+                        <tbody>
+                        {parsedData && parsedData.map(item =>
+                            <tr key={uuid()}>
+                              <td>{item.name}</td>
+                              <td>{item.json_name}</td>
+                              <td>{item.text}</td>
+                            </tr>
+                        )
                         }
 
-                      </tbody>
-                    </table>
-                  </div>
+                        </tbody>
+                      </table>
+                    </div>
+                  }
                 </div>
             </div>
 
