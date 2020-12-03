@@ -442,6 +442,11 @@ input.Area:focus span{
     margin-top: 10px;
 }
 
+.confirmBtn >  a{
+    color: #fff !important;
+    text-decoration: none !important;
+}
+
 .confirmBtn:hover {
     background-color: #27830d !important;
 }

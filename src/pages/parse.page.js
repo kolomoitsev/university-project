@@ -10,6 +10,8 @@ import { CSVLink, CSVDownload } from "react-csv";
 
 import '../App.css';
 
+import * as $ from 'jquery'
+
 const token = localStorage.getItem('token')
 
 
@@ -88,11 +90,19 @@ const ParsePage = () => {
 
             if(await csvData && parsedData.length) data.push([`name`, `json_name`, `text`, `answer`])
 
+            if(parsedData && parsedData.length) {
+                var jsonF = "text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(parsedData));
+
+                $('<a href="data:' + jsonF + '" download="data.json">download JSON</a>').appendTo('#jsonHolder');
+            }
+
             parsedData && parsedData.map(pItem => {
                 data.push([pItem.name, pItem.json_name, pItem.text, pItem.ans],)
             })
 
             await setCsvData(data)
+
+
 
         }
         getCsvData()
@@ -178,7 +188,9 @@ const ParsePage = () => {
 
                       { parsedData && <CSVLink className="btn customBtn" data={csvData}>Download CSV File</CSVLink> }
 
-                      { parsedData && <a className="btn confirmBtn" href={`data: ${JSON.stringify(parsedData)}` } download={"data.json"}>Download JSON</a> }
+                      {/*{ parsedData && <a className="btn confirmBtn" href={`data: ${JSON.stringify(parsedData)}` } download={"data.json"}>Download JSON</a> }{}*/}
+
+                      { parsedData && <div className="btn confirmBtn" id="jsonHolder"></div> }
 
                   </div>
                   {
