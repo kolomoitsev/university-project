@@ -16,38 +16,7 @@ const token = localStorage.getItem('token')
 
 
 const ParsePage = () => {
-
-    const data = [
-      {
-        name: 'field number 1',
-        value: 'Lorem ipsum dolor sit, amet consectetur'
-      },
-      {
-        name: 'field number 2',
-        value: 'Lorem ipsum dolor sit, amet consectetur'
-      },
-      {
-        name: 'field number 3',
-        value: 'Lorem ipsum dolor sit, amet consectetur'
-      },
-      {
-        name: 'field number 4',
-        value: 'Lorem ipsum dolor sit, amet consectetur'
-      },
-      {
-        name: 'field number 5',
-        value: 'Lorem ipsum dolor sit, amet consectetur'
-      },
-      {
-        name: 'field number 6',
-        value: 'Lorem ipsum dolor sit, amet consectetur'
-      },
-      {
-        name: 'field number 7',
-        value: 'Lorem ipsum dolor sit, amet consectetur'
-      },
-    ]
-
+    
     const [templates, setTemplates] = useState(null)
     const [uploadedImg, setUploadedImg] = useState(null)
     const [selectedTemplate, setSelectedTemplate] = useState(null)
@@ -92,7 +61,7 @@ const ParsePage = () => {
 
             if(parsedData && parsedData.length) {
                 var jsonF = "text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(parsedData));
-
+                $('#jsonHolder').empty();
                 $('<a href="data:' + jsonF + '" download="data.json">download JSON</a>').appendTo('#jsonHolder');
             }
 
