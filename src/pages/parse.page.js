@@ -86,10 +86,10 @@ const ParsePage = () => {
 
             let data = []
 
-            if(await csvData && parsedData.length) data.push([[`name`, `json_name`, `test`]])
+            if(await csvData && parsedData.length) data.push([`name`, `json_name`, `text`, `answer`])
 
             parsedData && parsedData.map(pItem => {
-                data.push([pItem.name, pItem.json_name, pItem.text],)
+                data.push([pItem.name, pItem.json_name, pItem.text, pItem.ans],)
             })
 
             await setCsvData(data)
@@ -171,10 +171,14 @@ const ParsePage = () => {
 
                   </div>
                   <div className="col-md-2 text-center">
+
                     <i className='bx bx-right-arrow-circle bx-flip-vertical' > </i>
 
+                      { parsedData && console.log(parsedData) }
+
                       { parsedData && <CSVLink className="btn customBtn" data={csvData}>Download CSV File</CSVLink> }
-                      { parsedData && <a className="btn confirmBtn" href={`data: ${JSON.stringify(parsedData)} `} download={"data.json"}>Download JSON</a> }
+
+                      { parsedData && <a className="btn confirmBtn" href={`data: ${JSON.stringify(parsedData)}` } download={"data.json"}>Download JSON</a> }
 
                   </div>
                   {
@@ -185,18 +189,20 @@ const ParsePage = () => {
                           <th scope="col">Field name</th>
                           <th scope="col">Json name</th>
                           <th scope="col">Value</th>
+                          <th scope="col">Answer</th>
                         </tr>
                         </thead>
                         <tbody>
-                        {parsedData && parsedData.map(item =>
-                            <tr key={uuid()}>
-                              <td>{item.name}</td>
-                              <td>{item.json_name}</td>
-                              <td>{item.text}</td>
-                            </tr>
-                        )
-                        }
-
+                            {
+                                parsedData && parsedData.map(item =>
+                                <tr key={uuid()}>
+                                  <td>{item.name}</td>
+                                  <td>{item.json_name}</td>
+                                  <td>{item.text}</td>
+                                  <td>{item.ans}</td>
+                                </tr>
+                            )
+                            }
                         </tbody>
                       </table>
                     </div>
