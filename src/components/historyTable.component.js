@@ -1,87 +1,88 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
+import axios from 'axios'
+
+import ReactJson from 'react-json-view'
+import * as $ from "jquery";
+
 
 const HistoryTable = () => {
 
-    const data = [
-        {
-            templateName : `temp1`,
-            documentName : `name1`,
-            documentDate : `11.10.2020`,
-            documentLanguage : `en`,
-            documentLink : `https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Date/now`
-        },
-        {
-            templateName : `temp2`,
-            documentName : `name2`,
-            documentLanguage : `es`,
-            documentDate : `12.10.2020`,
-            documentLink : `https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Date/now`
-        },
-        {
-            templateName : `temp3`,
-            documentName : `name3`,
-            documentLanguage : `ru`,
-            documentDate : `13.10.2020`,
-            documentLink : `https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Date/now`
-        },
-        {
-            templateName : `temp4`,
-            documentName : `name4`,
-            documentLanguage : `uk`,
-            documentDate : `14.10.2020`,
-            documentLink : `https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Date/now`
-        },
-        {
-            templateName : `temp5`,
-            documentName : `name5`,
-            documentLanguage : `kz`,
-            documentDate : `15.10.2020`,
-            documentLink : `https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Date/now`
-        },
-        {
-            templateName : `temp6`,
-            documentName : `name6`,
-            documentLanguage : `md`,
-            documentDate : `16.10.2020`,
-            documentLink : `https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Date/now`
-        },
-        {
-            templateName : `temp7`,
-            documentName : `name7`,
-            documentLanguage : `fr`,
-            documentDate : `17.10.2020`,
-            documentLink : `https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Date/now`
-        }
-    ]
+    const [history, setHistory] = useState([])
 
+    const [selectedItem, setSelectedItem] = useState('')
+
+    useEffect( () => {
+
+        const getHistory = async () => {
+
+            const { data : { results } } = await axios.get(`${process.env.REACT_APP_API_SERVER}/history`, {
+                headers: {
+                    'Authorization' : `Bearer ${localStorage.getItem('token')}`
+                }
+            })
+                .catch(e => console.log(e))
+
+            results && console.log(results)
+
+            results && setHistory(results)
+
+            results && results.map((it, ind) => {
+                $(`#place-${ind}`).empty();
+            })
+
+            if (results) {
+                results.map((item, index) => {
+                    var jsonF = "text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(item.parsed_data));
+                    $('<a class="btn customBtn" href="data:' + jsonF + '" download="data.json">download JSON</a>').appendTo(`#place-${index}`);
+
+                })
+            }
+
+        }
+
+        getHistory()
+
+    }, [selectedItem])
+
+    const handleFormClick = (i) => {
+        setSelectedItem(i)
+    }
 
     return  (
         <>
 
+            { selectedItem && <div className="showMoreDataJson">
+                <div className="insideDisplay">
+                    <i onClick={ () => setSelectedItem(null)} className='bx bxs-x-circle'> </i>
+                    <ReactJson src={ (history[selectedItem-1]).parsed_data } />
+                </div>
+            </div> }
+
             <table className="table table-striped table-bordered">
                 <thead>
-                <tr>
-                    <th scope="col"><a href="">Template name</a></th>
-                    <th scope="col">Document name</th>
+                <tr className="center-col">
+                    <th scope="col"><a href="">Index</a></th>
+                    <th scope="col">Template name</th>
                     <th scope="col">Document language</th>
                     <th scope="col"><a href="">Document date</a></th>
+                    <th scope="col">More data</th>
                     <th scope="col">Download json</th>
                 </tr>
                 </thead>
                 <tbody>
 
 
-
-                { data && data.map(item =>
-                    <tr >
-                        <td>{item.templateName}</td>
-                        <td>{item.documentName}</td>
-                        <td>{item.documentLanguage}</td>
-                        <td>{item.documentDate}</td>
-                        <td><a className="btn customBtn" href={item.documentLink}>Download</a></td>
+                { history && history.map((item, index) =>
+                    <tr className="centeredItem">
+                        <td>{ index + 1 }</td>
+                        <td>{ item.template_name }</td>
+                        <td>en</td>
+                        <td>{ new Date(item.updated).toLocaleString() }</td>
+                        <td><a onClick={event => handleFormClick(index+1)} className="btn customBtn">Show</a></td>
+                        <td id={`place-${index}`}> </td>
                     </tr>
                     )
-                }
+                 }
 
 
                 </tbody>

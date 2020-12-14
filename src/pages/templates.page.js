@@ -1,86 +1,37 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 
 import {Header, ProjectBlock, CreateNewProject, Footer} from "../components/componets";
 
+import axios from 'axios'
+
 import '../App.css';
 
-const HomePage = () => {
+const TemplatesPage = () => {
+    
+    const TOKEN = localStorage.getItem('token');
 
-    const data = [
-        {
-            img: 'https://rojo-studio.com/wp-content/uploads/project-img-5.jpg',
-            title: 'AVpz template 1',
-            description: `Lorem Ipsum - это текст-"рыба", часто используемый в печати и вэб-дизайне. 
-                Lorem Ipsum является стандартной "рыбой" для текстов на латинице с начала XVI века.`,
-            ready: false,
-        },
-        {
-            img: 'https://rojo-studio.com/wp-content/uploads/project-img-5.jpg',
-            title: 'AVpz template 2',
-            description: `Lorem Ipsum - это текст-"рыба", часто используемый в печати и вэб-дизайне. 
-                Lorem Ipsum является стандартной "рыбой" для текстов на латинице с начала XVI века.`,
-            ready: false,
-        },
-        {
-            img: 'https://rojo-studio.com/wp-content/uploads/project-img-5.jpg',
-            title: 'AVpz template 3',
-            description: `Lorem Ipsum - это текст-"рыба", часто используемый в печати и вэб-дизайне. 
-                Lorem Ipsum является стандартной "рыбой" для текстов на латинице с начала XVI века.`,
-            ready: true,
-        },
-        {
-            img: 'https://rojo-studio.com/wp-content/uploads/project-img-5.jpg',
-            title: 'AVpz template 4',
-            description: `Lorem Ipsum - это текст-"рыба", часто используемый в печати и вэб-дизайне. 
-                Lorem Ipsum является стандартной "рыбой" для текстов на латинице с начала XVI века.`,
-            ready: true,
-        },
-        {
-            img: 'https://rojo-studio.com/wp-content/uploads/project-img-5.jpg',
-            title: 'AVpz template 5',
-            description: `Lorem Ipsum - это текст-"рыба", часто используемый в печати и вэб-дизайне. 
-                Lorem Ipsum является стандартной "рыбой" для текстов на латинице с начала XVI века.`,
-            ready: true,
-        },
-        {
-            img: 'https://rojo-studio.com/wp-content/uploads/project-img-5.jpg',
-            title: 'AVpz template 6',
-            description: `Lorem Ipsum - это текст-"рыба", часто используемый в печати и вэб-дизайне. 
-                Lorem Ipsum является стандартной "рыбой" для текстов на латинице с начала XVI века.`,
-            ready: true,
-        },
-        {
-            img: 'https://rojo-studio.com/wp-content/uploads/project-img-5.jpg',
-            title: 'AVpz template 7',
-            description: `Lorem Ipsum - это текст-"рыба", часто используемый в печати и вэб-дизайне. 
-                Lorem Ipsum является стандартной "рыбой" для текстов на латинице с начала XVI века.`,
-            ready: true,
-        },
-        {
-            img: 'https://rojo-studio.com/wp-content/uploads/project-img-5.jpg',
-            title: 'AVpz template 8',
-            description: `Lorem Ipsum - это текст-"рыба", часто используемый в печати и вэб-дизайне. 
-                Lorem Ipsum является стандартной "рыбой" для текстов на латинице с начала XVI века.`,
-            ready: true,
-        },
-        {
-            img: 'https://rojo-studio.com/wp-content/uploads/project-img-5.jpg',
-            title: 'AVpz template 9',
-            description: `Lorem Ipsum - это текст-"рыба", часто используемый в печати и вэб-дизайне. 
-                Lorem Ipsum является стандартной "рыбой" для текстов на латинице с начала XVI века.`,
-            ready: true,
-        },
-        {
-            img: 'https://rojo-studio.com/wp-content/uploads/project-img-5.jpg',
-            title: 'AVpz template 10',
-            description: `Lorem Ipsum - это текст-"рыба", часто используемый в печати и вэб-дизайне. 
-                Lorem Ipsum является стандартной "рыбой" для текстов на латинице с начала XVI века.`,
-            ready: true,
+    const [templates, setTemplates] = useState(null)
+
+    useEffect( () => {
+
+        const getTemplates = async () => {
+
+            const { data : { results } } = await axios.get(`${process.env.REACT_APP_API_SERVER}/structures/`, {
+                headers: {
+                    'Authorization' : `Bearer ${TOKEN}`
+                }
+            })
+                .catch(err => console.log(err))
+
+            results && console.log(results)
+
+            results && setTemplates(results)
+
         }
 
-    ];
+        getTemplates()
 
-    const TOKEN = localStorage.getItem('token');
+    }, [])
 
     return (
         <>
@@ -92,7 +43,7 @@ const HomePage = () => {
 
                 <div className="row">
                     {
-                        data && data.map(item => <ProjectBlock data={item}/>)
+                        templates && templates.map(item => <ProjectBlock data={item}/>)
                     }
                 </div>
 
@@ -104,4 +55,4 @@ const HomePage = () => {
     )
 };
 
-export default HomePage
+export default TemplatesPage
