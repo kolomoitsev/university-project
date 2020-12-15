@@ -645,3 +645,41 @@ tr.formInside i{
     font-size: 20px;
     z-index: 999;
 }
+
+
+.groupSearch{
+    display: flex;
+    position: relative;
+    align-items: center;
+}
+
+.groupSearch input{
+    width: 250px;
+    height: 35px;
+}
+.groupSearch button {
+    margin: 0 20px;
+    width: 90px;
+    height: 35px;
+    background-color: #30cb74;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+}
+
+.checkFilter{
+    display: flex;
+    position: relative;
+    width: 100%;
+    flex-direction: column;
+    margin: 25px 0;
+}
+.checkItem input{
+    width: 15px;
+    height: 15px;
+}
+.checkItem label{
+    font-size: 18px;
+    margin: 0 0 0 10px;
+}
