@@ -7,7 +7,7 @@ import axios from 'axios'
 import '../App.css';
 
 const TemplatesPage = () => {
-    
+
     const TOKEN = localStorage.getItem('token');
 
     const [templates, setTemplates] = useState(null)

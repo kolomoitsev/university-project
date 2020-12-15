@@ -3,13 +3,30 @@ import axios from 'axios'
 
 import ReactJson from 'react-json-view'
 import * as $ from "jquery";
-
+import * as _ from "lodash"
 
 const HistoryTable = () => {
 
     const [history, setHistory] = useState([])
 
     const [selectedItem, setSelectedItem] = useState('')
+
+    const [orderId, setOrderId] = useState('asc')
+
+    const [searchItem, setSearchItem] = useState(null)
+
+    const [foundedData, setFoundedData] = useState(null)
+
+    function search(arr, s){
+        let matches = [], i, key;
+
+        for( i = arr.length; i--; )
+            for( key in arr[i] )
+                if( arr[i].hasOwnProperty(key) && arr[i][key].indexOf(s) > -1 )
+                    matches.push( arr[i] );  // <-- This can be changed to anything
+
+        return matches;
+    };
 
     useEffect( () => {
 
@@ -22,7 +39,7 @@ const HistoryTable = () => {
             })
                 .catch(e => console.log(e))
 
-            results && console.log(results)
+            //results && console.log(results)
 
             results && setHistory(results)
 
@@ -44,9 +61,39 @@ const HistoryTable = () => {
 
     }, [selectedItem])
 
+    const filterIt = (arr, searchKey) =>  {
+        
+    }
+
+    const handleSearchClick = () => {
+        history && console.log(history)
+        history && console.log(filterIt(history, searchItem))
+    }
+
     const handleFormClick = (i) => {
         setSelectedItem(i)
     }
+
+    const sortBy = async (field) => {
+
+        const order = orderId === 'asc' ? 'asc' : 'desc'
+
+        const temp = await _.orderBy(history, field, [order])
+
+        setHistory(temp)
+
+        if(order === 'asc') {
+            setOrderId('desc')
+        }
+        else {
+            setOrderId('asc')
+        }
+
+
+        //history && console.log(history)
+    }
+
+
 
     return  (
         <>
@@ -61,10 +108,10 @@ const HistoryTable = () => {
             <table className="table table-striped table-bordered">
                 <thead>
                 <tr className="center-col">
-                    <th scope="col"><a href="">Index</a></th>
-                    <th scope="col">Template name</th>
+                    <th scope="col"><a onClick={() => sortBy('id')}>Index</a></th>
+                    <th scope="col"><a onClick={() => sortBy('template_name')} >Template name</a></th>
                     <th scope="col">Document language</th>
-                    <th scope="col"><a href="">Document date</a></th>
+                    <th scope="col"><a onClick={() => sortBy('created')}>Document date</a></th>
                     <th scope="col">More data</th>
                     <th scope="col">Download json</th>
                 </tr>
@@ -87,6 +134,37 @@ const HistoryTable = () => {
 
                 </tbody>
             </table>
+
+            <input onChange={event => setSearchItem(event.target.value)} type="text" placeholder={"Input parsed data value to search"}/>
+            <button onClick={() => handleSearchClick()} >Find</button>
+
+            { foundedData && <table className="table table-striped table-bordered">
+                <thead>
+                <tr className="center-col">
+                    <th scope="col"><a onClick={() => sortBy('id')}>Index</a></th>
+                    <th scope="col"><a onClick={() => sortBy('template_name')} >Template name</a></th>
+                    <th scope="col">Document language</th>
+                    <th scope="col"><a onClick={() => sortBy('created')}>Document date</a></th>
+                    <th scope="col">More data</th>
+                </tr>
+                </thead>
+                <tbody>
+
+
+                { foundedData && foundedData.map((item, index) =>
+                    <tr className="centeredItem">
+                        <td>{ index + 1 }</td>
+                        <td>{ item.template_name }</td>
+                        <td>en</td>
+                        <td>{ new Date(item.updated).toLocaleString() }</td>
+                        <td><a onClick={event => handleFormClick(index+1)} className="btn customBtn">Show</a></td>
+                    </tr>
+                )
+                }
+
+
+                </tbody>
+            </table> }
 
         </>
     )
