@@ -119,8 +119,6 @@ const HistoryTable = () => {
 
     }, [selectedCheckBoxes])
 
-
-
     const handleCheckboxChange = async (event) => {
 
         let newArray = [...selectedCheckBoxes, event.target.value];
@@ -147,9 +145,12 @@ const HistoryTable = () => {
         else {
             setOrderId('asc')
         }
+    }
 
+    history && console.log(history)
 
-        //history && console.log(history)
+    const buildLink = (item) => {
+        return <a href={`/templates/${item.template}`}>{item.template_name}</a>
     }
 
     return  (
@@ -178,7 +179,7 @@ const HistoryTable = () => {
                 { foundedData && foundedData.map((item, index) =>
                     <tr className="centeredItem">
                         <td>{ index + 1 }</td>
-                        <td>{ item.template_name }</td>
+                        <td>{ buildLink(item) } </td>
                         <td>en</td>
                         <td>{ new Date(item.updated).toLocaleString() }</td>
                         <td><a onClick={event => handleFormClick(index+1)} className="btn customBtn">Show</a></td>
@@ -190,7 +191,7 @@ const HistoryTable = () => {
                 { (!foundedData && history) && history.map((item, index) =>
                     <tr className="centeredItem">
                         <td>{ index + 1 }</td>
-                        <td>{ item.template_name }</td>
+                        <td className="templateLink">{ buildLink(item) }</td>
                         <td>en</td>
                         <td>{ new Date(item.updated).toLocaleString() }</td>
                         <td><a onClick={event => handleFormClick(index+1)} className="btn customBtn">Show</a></td>

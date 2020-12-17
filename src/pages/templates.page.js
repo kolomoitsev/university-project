@@ -23,7 +23,7 @@ const TemplatesPage = () => {
             })
                 .catch(err => console.log(err))
 
-            results && console.log(results)
+            //results && console.log(results)
 
             results && setTemplates(results)
 
@@ -31,7 +31,17 @@ const TemplatesPage = () => {
 
         getTemplates()
 
-    }, [])
+    }, [templates])
+
+    const deleteTemplate = (id) => {
+        const index = templates.findIndex(item => item.id === id)
+        const temps = templates
+        temps.splice(index, 1)
+        console.log(temps)
+        setTemplates(temps)
+        //this.forceUpdate()
+        console.log(templates)
+    }
 
     return (
         <>
@@ -43,7 +53,7 @@ const TemplatesPage = () => {
 
                 <div className="row">
                     {
-                        templates && templates.map(item => <ProjectBlock data={item}/>)
+                        templates && templates.map(item => <ProjectBlock deleteFunc={deleteTemplate} data={item}/>)
                     }
                 </div>
 

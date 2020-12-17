@@ -683,3 +683,11 @@ tr.formInside i{
     font-size: 18px;
     margin: 0 0 0 10px;
 }
+.center-col > th > a:hover{
+    cursor: pointer !important;
+}
+.templateLink > a{
+    color: #000;
+    text-decoration: none !important;
+}
+
